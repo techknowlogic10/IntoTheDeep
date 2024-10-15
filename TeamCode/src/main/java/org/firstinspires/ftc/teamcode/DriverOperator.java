@@ -16,8 +16,12 @@ public class DriverOperator extends OpMode {
    private DcMotor frontLeft = null;
    private DcMotor frontRight = null;
    private DcMotor backLeft = null;
-   private DcMotor backRight= null;
-  // private DcMotor elevator = null;
+   private DcMotor backRight = null;
+   private DcMotor elevator = null;
+
+   private Servo elbow = null;
+   private Servo intake = null;
+
    private int drivePower = 1;
 
 
@@ -42,9 +46,19 @@ public class DriverOperator extends OpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-       /* elevator = hardwareMap.dcMotor.get("elevator"); //Port #?
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
-        //elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        elevator = hardwareMap.dcMotor.get("elevator"); //Port #?
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        elbow = hardwareMap.get(Servo.class, "elbow");
+        elbow.scaleRange(0,1);
+        elbow.setPosition(0.15);
+
+
+        intake = hardwareMap.get(Servo.class, "intake");
+        intake.scaleRange(0,1);
+        intake.setPosition(0.53);
+
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -59,7 +73,8 @@ public class DriverOperator extends OpMode {
         double y = -gamepad1.left_stick_y * 4.1;
         double x = gamepad1.left_stick_x * 5.1;
         double rx = gamepad1.right_stick_x;
-        //double elevatorPower = gamepad2.right_stick_y;
+
+
 
         telemetry.addLine("y: "+ y +" , x: "+ x + " , rx: +"+ rx);
 
@@ -72,14 +87,35 @@ public class DriverOperator extends OpMode {
         double backRightPower = (y + x - rx) / denominator;
 
         telemetry.addLine("denominator: "+ denominator +" , frontLeftPower: "+ frontLeftPower + " , backLeftPower: +"+ backLeftPower +", frontRightPower: "+frontRightPower +" , backRightPower: "+backRightPower);
-        //telemetry.addLine("elevatorPower"+ elevatorPower);
 
         //Setting the Power for the DC Motors
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
-       // elevator.setPower(elevatorPower);
+
+        double elevatorPower = gamepad2.right_stick_y;
+        telemetry.addLine("elevatorPower: "+ elevatorPower);
+        elevator.setPower(elevatorPower);
+
+        if(gamepad2.dpad_up) {
+            telemetry.addLine("gamepad2.dpad_up 0");
+            elbow.setPosition(0.15);
+        } else if(gamepad2.dpad_down){
+            telemetry.addLine("gamepad2.dpad_down 1");
+            elbow.setPosition(0.48);
+        }
+
+        if(gamepad2.left_bumper){
+            telemetry.addLine("gamepad2.left_bumper 0.9");
+           // intake.setPosition(0);
+            intake.setPosition(0.9);
+        }
+        else if(gamepad2.right_bumper){
+            telemetry.addLine("gamepad2.right_bumper 0.53");
+            //intake.setPosition(1);
+            intake.setPosition(0.53);
+        }
 
         telemetry.update();
 

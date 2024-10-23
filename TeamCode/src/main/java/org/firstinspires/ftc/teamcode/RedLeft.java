@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 @Autonomous
-public class RedLeft extends LinearOpMode{
+public class RedLeft extends LinearOpMode {
 
     Servo elbow = null;
     Servo intake = null;
@@ -25,7 +25,7 @@ public class RedLeft extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
 
-         elbow = hardwareMap.get(Servo.class, "elbow");
+        elbow = hardwareMap.get(Servo.class, "elbow");
         elbow.scaleRange(0,1);
         elbow.setPosition(0.53);
 
@@ -38,8 +38,13 @@ public class RedLeft extends LinearOpMode{
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        Pose2d initialPose = new Pose2d(-23,-54,Math.toRadians(90));
+        //Pose2d initialPose = new Pose2d(-23,-54,Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-10, -55, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap,initialPose);
+
+
+        telemetry.addData(">>", "Press start to continue");
+        telemetry.update();
 
         waitForStart();
 

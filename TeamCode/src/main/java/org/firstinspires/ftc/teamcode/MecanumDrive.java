@@ -59,9 +59,9 @@ public final class MecanumDrive {
         // TODO: fill in these values based on
         //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
+                RevHubOrientationOnRobot.LogoFacingDirection.UP;
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.UP;
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         /*
         // drive model parameters
@@ -94,10 +94,16 @@ public final class MecanumDrive {
 
          */
 
-        // drive model parameters
-        public double inPerTick = 0.0019792182;
-        public double lateralInPerTick = inPerTick;
+/*
+        // sample drive model parameters
+       // public double inPerTick = 0.0019792182;
+       // public double lateralInPerTick = inPerTick;
+       // public double trackWidthTicks = 5943.475305543868;
+
+        public double inPerTick = 0.0383509108341323; //0.0019792182;
+        public double lateralInPerTick = 0.0392850127676291; // inPerTick;
         public double trackWidthTicks = 5943.475305543868;
+
 
         // feedforward parameters (in tick units)
         public double kS = 0.7458172035468942;
@@ -121,6 +127,39 @@ public final class MecanumDrive {
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
         public double headingVelGain = 0.0; // shared with turn
+*/
+
+
+        //Tunning 10/21/2025
+        // sample drive model parameters
+        public double inPerTick = 0.0185692400538508; // 0.0383509108341323; //0.0019792182;
+        public double lateralInPerTick = 0.0200672252044349; // 0.0392850127676291; // inPerTick;
+        public double trackWidthTicks = 1474.7125327248573;
+
+        // feedforward parameters (in tick units)
+        public double kS = 1.2093553697737756;
+        public double kV = 0.004215127307644231;
+        public double kA = 0.001;
+
+        // path profile parameters (in inches)
+        public double maxWheelVel = 50;
+        public double minProfileAccel = -30;
+        public double maxProfileAccel = 50;
+
+        // turn profile parameters (in radians)
+        public double maxAngVel = Math.PI; // shared with path
+        public double maxAngAccel = Math.PI;
+
+        // path controller gains
+        public double axialGain = 1;
+        public double lateralGain = 1;
+        public double headingGain = 2; // shared with turn
+
+        public double axialVelGain = 0.0;
+        public double lateralVelGain = 0.0;
+        public double headingVelGain = 0.0; // shared with turn
+
+
 
     }
 
@@ -186,9 +225,9 @@ public final class MecanumDrive {
             // TODO: reverse encoders if needed
             //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
             rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-            leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
             rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         }
@@ -291,9 +330,9 @@ public final class MecanumDrive {
         // TODO: reverse motor directions if needed
         //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
         rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)

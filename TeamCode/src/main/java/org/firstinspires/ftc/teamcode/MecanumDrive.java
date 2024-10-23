@@ -131,7 +131,7 @@ public final class MecanumDrive {
 
 
         //Tunning 10/21/2025
-        // sample drive model parameters
+        // sample drive model parameters --Durgha Test
         public double inPerTick = 0.0185692400538508; // 0.0383509108341323; //0.0019792182;
         public double lateralInPerTick = 0.0200672252044349; // 0.0392850127676291; // inPerTick;
         public double trackWidthTicks = 1474.7125327248573;

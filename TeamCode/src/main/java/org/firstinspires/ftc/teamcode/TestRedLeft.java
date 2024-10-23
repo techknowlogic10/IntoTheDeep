@@ -105,10 +105,29 @@ public class TestRedLeft extends LinearOpMode {
                 elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
 
-                telemetry.addLine("elevaor taregt 0");
-                elevator.setTargetPosition(1400);
+                telemetry.addLine("elevaor taregt 600");
+                telemetry.update();
+
+                elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                telemetry.addLine("before setTargetPosition");
+                telemetry.update();
+
+                elevator.setTargetPosition(600);
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elevator.setPower(0.8);
+                elevator.setPower(1.0);
+
+                telemetry.addLine("before sleep");
+                telemetry.update();
+
+                while (elevator.isBusy()) {
+                    sleep(50);
+                }
+
+                telemetry.addLine("before returning false");
+                telemetry.update();
                 return true;
             }
         }

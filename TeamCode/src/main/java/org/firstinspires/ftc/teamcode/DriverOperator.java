@@ -160,6 +160,11 @@ public class DriverOperator extends OpMode {
             // intake.setPosition(0);
             intake.setPosition(0.4); //intake close
         }
+        else if(gamepad2.dpad_right){
+            telemetry.addLine("gamepad2.dpad_right");
+            // intake.setPosition(0);
+            intake.setPosition(0.2); //intake wide open
+        }
 
         telemetry.update();
 

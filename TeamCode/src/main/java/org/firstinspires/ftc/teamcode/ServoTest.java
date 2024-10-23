@@ -75,6 +75,11 @@ public class ServoTest extends OpMode {
             // intake.setPosition(0);
             intake.setPosition(intake_start);
         }
+        else if(gamepad2.dpad_right){
+            telemetry.addLine("gamepad2.dpad_right");
+            // intake.setPosition(0);
+            intake.setPosition(0.2); //intake wide open
+        }
 
 
 

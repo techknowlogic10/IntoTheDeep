@@ -26,6 +26,7 @@ public class DriverOperator extends OpMode {
     private DcMotorEx encoderFrontRight = null;
     private DcMotorEx encoderBackLeft = null;
     private DcMotorEx encoderBackRight = null;*/
+   private DcMotorEx encoderElevator = null;
 
    private Servo elbow = null;
    private Servo intake = null;
@@ -56,38 +57,49 @@ public class DriverOperator extends OpMode {
 
         elevator = hardwareMap.dcMotor.get("elevator"); //Port #?
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        //elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slider = hardwareMap.dcMotor.get("slider");
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        slider.setDirection(DcMotorSimple.Direction.REVERSE);
+        //slider.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
         elbow = hardwareMap.get(Servo.class, "elbow");
         elbow.scaleRange(0,1);
-        elbow.setPosition(0.48); //elbow up
+       elbow.setPosition(0.48); //elbow up tiny
+      //  elbow.setPosition(0.48); //elbow up
 
         intake = hardwareMap.get(Servo.class, "intake");
+        intake.setDirection(Servo.Direction.REVERSE);
         intake.scaleRange(0,1);
-        intake.setPosition(0.4); //intake open
+        intake.setPosition(0.4); //intake open tiny
+       // intake.setPosition(0.52); //intake open
 
 
-       /* encoderFrontLeft = hardwareMap.get(DcMotorEx.class, "frontleft"); // Port #0
+       /* encoderFrontLeft = hardwareMap.get(DcMotorEx.class, "frontleft");
         encoderFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        encoderFrontRight = hardwareMap.get(DcMotorEx.class, "frontright"); // Port #1
+        encoderFrontRight = hardwareMap.get(DcMotorEx.class, "frontright");
         encoderFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        encoderBackLeft = hardwareMap.get(DcMotorEx.class, "backleft"); //Port#2
+        encoderBackLeft = hardwareMap.get(DcMotorEx.class, "backleft");
         encoderBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        encoderBackRight = hardwareMap.get(DcMotorEx.class, "backright"); //Port #3
+        encoderBackRight = hardwareMap.get(DcMotorEx.class, "backright");
         encoderBackRight.setDirection(DcMotorSimple.Direction.REVERSE);*/
+
+        encoderElevator = hardwareMap.get(DcMotorEx.class, "elevator");
+        encoderElevator.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
     @Override
     public void loop(){
@@ -125,9 +137,12 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("encoderBackLeft: "+ encoderBackLeft.getCurrentPosition());
         telemetry.addLine("encoderBackRight: "+ encoderBackRight.getCurrentPosition());*/
 
+        telemetry.addLine("elevator encoder: "+ elevator.getCurrentPosition());
+        telemetry.addLine("encoderElevator encoder: "+ encoderElevator.getCurrentPosition());
 
 
-        double sliderPower = gamepad1.right_stick_y;
+
+        double sliderPower = gamepad2.left_stick_y;
         telemetry.addLine("sliderPower: "+ sliderPower);
         slider.setPower((sliderPower));
 
@@ -139,30 +154,26 @@ public class DriverOperator extends OpMode {
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_down 5.4");
             elbow.setPosition(0.48); // elbow up
-
         } else if(gamepad2.dpad_down){
-
             telemetry.addLine("gamepad2.dpad_up 0");
-            elbow.setPosition(0.1); //elbow down
+            //elbow.setPosition(0.1); //elbow down //tiney elbow
+            elbow.setPosition(0.265); //elbow down
         }else if(gamepad2.dpad_left){
-
             telemetry.addLine("gamepad2.dpad_left 0.3");
-            elbow.setPosition(0.3); //elbow 90-parallal
+            elbow.setPosition(0.38); //elbow 90-parallal
         }
 
         if(gamepad2.left_bumper){
             telemetry.addLine("gamepad2.right_bumper 0.8");
-            //intake.setPosition(1);
             intake.setPosition(0.85); //intake open  //0.8-1021
         }
         else if(gamepad2.right_bumper){
             telemetry.addLine("gamepad2.left_bumper 0.37");
-            // intake.setPosition(0);
-            intake.setPosition(0.4); //intake close
+           // intake.setPosition(0.4); //intake close // tiny
+            intake.setPosition(0.52); //intake close
         }
         else if(gamepad2.dpad_right){
             telemetry.addLine("gamepad2.dpad_right");
-            // intake.setPosition(0);
             intake.setPosition(0.2); //intake wide open
         }
 

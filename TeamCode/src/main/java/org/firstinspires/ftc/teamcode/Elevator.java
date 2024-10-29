@@ -1,140 +1,173 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.config.Config;
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.acmerobotics.roadrunner.Action;
-import androidx.annotation.NonNull;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
-@Config
 public class Elevator {
 
-    public static int LOW_CHAMBER_LEVEL = 100;//750;
-    public static int HIGH_CHAMBER_LEVEL = 1550;
-
-    public static int LOW_JUNCTION_TICKS = 750;
-    public static int MID_JUNCTION_TICKS = 1550;
-    public static int HIGH_JUNCTION_TICKS = 2600;
-    public static int TICK_DROP_BEFORE_RELEASE = 100;
-
-    private HardwareMap hardwareMap;
-    DcMotor elevator = null;
-
-    //diameter of spool = 50mm
-    //REV HEX 40:1..ticks per rev :''
+    private DcMotor elevator;
 
     public Elevator(HardwareMap hardwareMap) {
-        this.hardwareMap = hardwareMap;
+
+       /* telemetry.addLine(" Construcor ElevatorTest");
+        telemetry.update();*/
         elevator = hardwareMap.get(DcMotor.class, "elevator");
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+       /* telemetry.addLine(" end Construcor ElevatorTest");
+        telemetry.update();*/
     }
 
     public class ElevatorUp implements Action {
-       private boolean initialized = false;
+        private boolean initialized = false;
+        private double uppos = 0;
+        public ElevatorUp(double elevatorUpPos){
+            uppos = elevatorUpPos;
+        }
+
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-           /* if (!initialized) {
+            if (!initialized) {
                 elevator.setPower(0.8);
                 initialized = true;
             }
 
             double pos = elevator.getCurrentPosition();
-            packet.put("elevaorPos: ", pos);
-            if (pos < 100.0) {
+            // packet.put("elevaorPos: ", pos);
+           /* telemetry.addLine("elevaorPos: "+ pos);
+            telemetry.update();*/
+
+            if (pos < uppos) {
                 return true;
             } else {
                 elevator.setPower(0);
                 return false;
-            }*/
-            /*elevator.setTargetPosition(300);
-            elevator.setPower(0.8);*/
-            return  true;
+            }
+
+               /* elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+               // elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                elevator.setTargetPosition(1300);
+
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setPower(0.8);
+                return false;*/
+
+
+               /* telemetry.addLine("elevaor taregt 1400");
+                elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setTargetPosition(400);
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setPower(0.8);
+                return false;*/
+
+               /* telemetry.addLine("elevaor taregt 600");
+                telemetry.update();*/
+
+               /* elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
+                /*
+                telemetry.addLine("before setTargetPosition");
+                telemetry.update();
+
+                elevator.setTargetPosition(1300);
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setPower(1.0);
+
+                telemetry.addLine("before sleep");
+                telemetry.update();
+
+                 */
+
+               /* while (elevator.isBusy()) {
+                    sleep(50);
+                }*/
+            /*
+                telemetry.addLine("before returning false");
+                telemetry.update();
+                return false;
+
+             */
+
 
 
         }
     }
-    public Action elevatorUp() {
-        return new ElevatorUp();
+    public Action elevatorUp(double elevatorUpPos) {
+        return new Elevator.ElevatorUp(elevatorUpPos);
     }
 
+    public class ElevatorDown implements Action {
+        private boolean initialized = false;
+        private double downpos = 0;
 
-    public void goToLevel(int junctionLevel) {
-
-        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        if (junctionLevel == 0) {
-            goToPosition(300);
-        } else if (junctionLevel == 1) {
-            goToPosition(LOW_CHAMBER_LEVEL);
-        } else if (junctionLevel == 2) {
-            goToPosition(MID_JUNCTION_TICKS);
-        } else {
-            goToPosition(HIGH_JUNCTION_TICKS);
-        }
-    }
-
-    public void goUp() {
-
-       // elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       // elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-       // elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        goToPosition(200);
-
-
-    }
-
-    private void goToPosition(int desiredPosition) {
-
-        elevator.setTargetPosition(desiredPosition);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(1.0);
-
-        while (elevator.isBusy()) {
-            sleep(50);
+        public ElevatorDown(double elevatorDownPos){
+            downpos = elevatorDownPos;
         }
 
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                elevator.setPower(-1.0);
+                initialized = true;
+            }
 
-    }
+            double pos = elevator.getCurrentPosition();
+            packet.put("elevatorPos :", pos);
+            if (pos > downpos) {
+                return true;
+            } else {
+                elevator.setPower(0);
+                return false;
+            }
 
-    public void holdElevator(int holdIterations) {
-        for (int i = 0; i < holdIterations; i++) {
-            elevator.setPower(0.05);
-            sleep(50);
+                /*elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
+
+               /* telemetry.addLine("elevaor taregt 600");
+                telemetry.update();
+
+                elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                telemetry.addLine("before setTargetPosition");
+                telemetry.update();
+
+                elevator.setTargetPosition(600);
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setPower(1.0);
+
+                telemetry.addLine("before sleep");
+                telemetry.update();
+
+                while (elevator.isBusy()) {
+                    sleep(50);
+                }
+
+                telemetry.addLine("before returning false");
+                telemetry.update();
+                return false;*/
+
+
+                /*elevator.setTargetPosition(0);
+                elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elevator.setPower(0.8);
+                return false;*/
         }
     }
-
-    private final void sleep(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+    public Action elevatorDown(double elevatorDownPos){
+        return new Elevator.ElevatorDown(elevatorDownPos);
     }
 
-    public void goToHome() {
-        elevator.setTargetPosition(0);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(1.0);
-
-        while (elevator.isBusy()) {
-            sleep(50);
-        }
-    }
-
-    public void dropBeforeRelease() {
-        int currentTicks = elevator.getCurrentPosition();
-        elevator.setTargetPosition(currentTicks - TICK_DROP_BEFORE_RELEASE);
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(1.0);
-        while (elevator.isBusy()) {
-            sleep(50);
-        }
-    }
 }

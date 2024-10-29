@@ -15,21 +15,21 @@ public class ServoTest extends OpMode {
     private Servo elbow = null;
     private Servo intake = null;
 
-    public static double intake_start = 0.4;
+    public static double intake_start = 0.52; // 0.4; tiny
     public static double intake_end = 0.85;
 
    // public static double intake_sr_start = 0;
   //  public static double intake_sr_end = 1;
     public static double intake_initial_pos = 0.4;
 
-    public static double elbow_start = 0.1;
+    public static double elbow_start = 0.265; // 0.1; tiny claw
     public static double elbow_end = 0.48;
 
    // public static double elbow_sr_start = 0;
    // public static double elbow_sr_end = 1;
     public static double elbow_initial_pos = 0.48;
 
-    public static double elbow_middle = 0.3;
+    public static double elbow_middle = 0.38;
 
 
 
@@ -45,6 +45,7 @@ public class ServoTest extends OpMode {
 
         //intake = hardwareMap.servo.get("intake");
         intake = hardwareMap.get(Servo.class, "intake");
+        intake.setDirection(Servo.Direction.REVERSE);
         intake.scaleRange(0,1);
         intake.setPosition(intake_initial_pos);
     }

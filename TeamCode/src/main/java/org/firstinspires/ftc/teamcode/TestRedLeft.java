@@ -34,8 +34,8 @@ public class TestRedLeft extends LinearOpMode {
     //public static int LOW_CHAMBER_LEVEL = 1;
 
     public static double lineToY = -31.5;
-    public static int elevatorUpPos = 2000;
-    public static int elevatorDownPos = 1800; // -1994;
+    public static int elevatorUpPos = 330;
+    public static int elevatorDownPos = 280;
     public static double strafeToX= -50;
 
 
@@ -88,6 +88,7 @@ public class TestRedLeft extends LinearOpMode {
             telemetry.update();
             elevator = hardwareMap.get(DcMotor.class, "elevator");
             elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+           // double ticksPerRev= elevator.getMotorType().getTicksPerRev();
 
 
             elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -125,6 +126,12 @@ public class TestRedLeft extends LinearOpMode {
                     return false;
                 }*/
 
+                uppos = getElevatorEncoderUpDistnace(uppos);
+
+                elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
                 elevator.setTargetPosition(uppos);
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setPower(0.8);
@@ -132,6 +139,39 @@ public class TestRedLeft extends LinearOpMode {
 
 
             }
+
+            private int getElevatorEncoderUpDistnace(int targetDistance) {
+
+                double COUNTS_PER_MOTOR_REV    = 28.0;
+                double DRIVE_GEAR_REDUCTION    = 30.21;
+                double PULLEY_DIAMETER_MM = 46;  // ToDo: Measure and Change. 46 mm
+                double WHEEL_CIRCUMFERENCE_MM  = PULLEY_DIAMETER_MM * Math.PI;
+
+                double COUNTS_PER_WHEEL_REV    = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;
+                double COUNTS_PER_MM           = COUNTS_PER_WHEEL_REV / WHEEL_CIRCUMFERENCE_MM;
+
+                telemetry.addData("BalaElevatorTest: COUNTS_PER_WHEEL_REV: ", COUNTS_PER_WHEEL_REV);
+                telemetry.update();
+                System.out.println("BalaElevatorTest: COUNTS_PER_WHEEL_REV: "+ COUNTS_PER_WHEEL_REV);
+
+
+                telemetry.addData("BalaElevatorTest: COUNTS_PER_MM: ", COUNTS_PER_MM);
+                telemetry.update();
+                System.out.println("BalaElevatorTest: COUNTS_PER_MM: "+ COUNTS_PER_MM);
+
+                double ticksPerRev= elevator.getMotorType().getTicksPerRev();
+                telemetry.addData("BalaElevatorTest: Ticks per revolution: ", ticksPerRev);
+                telemetry.update();
+
+                int distance2MoveInMM = (int)(targetDistance * COUNTS_PER_MM);
+
+                //int elePos += eleTarget;
+
+                return distance2MoveInMM;
+
+            }
+
+
         }
         public Action elevatorUp(int elevatorUpPos) {
             return new ElevatorUp(elevatorUpPos);
@@ -161,11 +201,44 @@ public class TestRedLeft extends LinearOpMode {
                     return false;
                 }*/
 
+                downpos = getElevatorEncoderDownDistnace (downpos);
+
                 elevator.setTargetPosition(downpos);
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setPower(-1.0);
                 return false;
             }
+            private int getElevatorEncoderDownDistnace(int targetDistance) {
+
+                double COUNTS_PER_MOTOR_REV    = 28.0;
+                double DRIVE_GEAR_REDUCTION    = 30.21;
+                double PULLEY_DIAMETER_MM = 46;  // ToDo: Measure and Change. 46 mm
+                double WHEEL_CIRCUMFERENCE_MM  = PULLEY_DIAMETER_MM * Math.PI;
+
+                double COUNTS_PER_WHEEL_REV    = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;
+                double COUNTS_PER_MM           = COUNTS_PER_WHEEL_REV / WHEEL_CIRCUMFERENCE_MM;
+
+                telemetry.addData("BalaElevatorTest: COUNTS_PER_WHEEL_REV: ", COUNTS_PER_WHEEL_REV);
+                telemetry.update();
+                System.out.println("BalaElevatorTest: COUNTS_PER_WHEEL_REV: "+ COUNTS_PER_WHEEL_REV);
+
+
+                telemetry.addData("BalaElevatorTest: COUNTS_PER_MM: ", COUNTS_PER_MM);
+                telemetry.update();
+                System.out.println("BalaElevatorTest: COUNTS_PER_MM: "+ COUNTS_PER_MM);
+
+                double ticksPerRev= elevator.getMotorType().getTicksPerRev();
+                telemetry.addData("BalaElevatorTest: Ticks per revolution: ", ticksPerRev);
+                telemetry.update();
+
+                int distance2MoveInMM = (int)(targetDistance * COUNTS_PER_MM);
+
+                //int elePos += eleTarget;
+
+                return distance2MoveInMM;
+
+            }
+
         }
         public Action elevatorDown(int elevatorDownPos){
             return new ElevatorDown(elevatorDownPos);
@@ -179,7 +252,7 @@ public class TestRedLeft extends LinearOpMode {
 
             elbow = hardwareMap.get(Servo.class, "elbow");
             //elbow.setPosition(0.48); //tiny
-            elbow.setPosition(0.38); //tiny
+            elbow.setPosition(0.12); //tiny
            // elbow.setPosition(0.48);
             telemetry.addLine(" Construcor Elbow");
             telemetry.update();
@@ -188,7 +261,7 @@ public class TestRedLeft extends LinearOpMode {
         public class ElbowUp implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbow.setPosition(0.48);
+                elbow.setPosition(0.12);
                 return false;
             }
         }
@@ -199,7 +272,7 @@ public class TestRedLeft extends LinearOpMode {
         public class DownElbow implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbow.setPosition(0.265);
+                elbow.setPosition(0);
                 return false;
             }
         }
@@ -374,8 +447,12 @@ public class TestRedLeft extends LinearOpMode {
                 new SequentialAction(
                        // elbow.downElbow(),
                         elevator.elevatorDown(elevatorDownPos),
-                        new SleepAction(2),
-                        intake.openIntake()
+                       // new SleepAction(1),
+                        elbow.downElbow(),
+                        new SleepAction(1),
+                        intake.openIntake(),
+                        elbow.upEobow(),
+                        elevator.elevatorDown(0)
                        // step2Action,
                        /* new ParallelAction(
                                 elevator.elevatorDown(0)
@@ -394,5 +471,7 @@ public class TestRedLeft extends LinearOpMode {
        telemetry.update();
 
     }
+
+
 
 }

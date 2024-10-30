@@ -38,6 +38,7 @@ public class ServoTest extends OpMode {
 
 
         elbow = hardwareMap.get(Servo.class, "elbow");
+       // elbow.setDirection(Servo.Direction.REVERSE);
 
         // elbow.setPosition(1);
         elbow.scaleRange(0,1);

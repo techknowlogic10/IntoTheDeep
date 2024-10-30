@@ -27,16 +27,14 @@ public class ElevatorTest extends OpMode {
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         encoderElevator = hardwareMap.get(DcMotorEx.class, "elevator");
        // encoderElevator.
        // encoderElevator.setDirection(DcMotorSimple.Direction.FORWARD);
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-        elbow.setPosition(0.38);
+        elbow.setPosition(0.12); // elbow up elow_end
 
         intake = hardwareMap.get(Servo.class, "intake");
         intake.setDirection(Servo.Direction.REVERSE);
@@ -52,11 +50,15 @@ public class ElevatorTest extends OpMode {
             telemetry.update();
             System.out.println("before pos: "+elevator.getCurrentPosition());
 
+            elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
             elevator.setTargetPosition(elevator_up);
             elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             elevator.setPower(0.8);
+
 
             telemetry.addLine("After pos: "+elevator.getCurrentPosition());
             telemetry.update();
@@ -109,6 +111,14 @@ public class ElevatorTest extends OpMode {
 
         }
 
+    }
+
+    private final void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 

@@ -67,7 +67,7 @@ public class DriverOperator extends OpMode {
 
         elbow = hardwareMap.get(Servo.class, "elbow");
         elbow.scaleRange(0,1);
-       elbow.setPosition(0.48); //elbow up tiny
+       elbow.setPosition(0.32); //elbow up tiny
       //  elbow.setPosition(0.48); //elbow up
 
         intake = hardwareMap.get(Servo.class, "intake");
@@ -153,14 +153,14 @@ public class DriverOperator extends OpMode {
 
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_down 5.4");
-            elbow.setPosition(0.48); // elbow up
+            elbow.setPosition(0.32); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_up 0");
             //elbow.setPosition(0.1); //elbow down //tiney elbow
-            elbow.setPosition(0.265); //elbow down
+            elbow.setPosition(0); //elbow down/ elbow_start
         }else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
-            elbow.setPosition(0.38); //elbow 90-parallal
+            elbow.setPosition(0.12); //elbow 90-parallal/ elbow_middle
         }
 
         if(gamepad2.left_bumper){

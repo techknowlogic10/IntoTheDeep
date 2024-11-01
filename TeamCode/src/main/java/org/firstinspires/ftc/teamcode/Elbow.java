@@ -9,22 +9,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Elbow {
 
-    private Servo elbow;
+    private Servo elbow = null;
 
     public Elbow(HardwareMap hardwareMap) {
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-        //elbow.setPosition(0.48); //tiny
-        elbow.setPosition(0.38); //tiny
-        // elbow.setPosition(0.48);
-       /* telemetry.addLine(" Construcor Elbow");
-        telemetry.update();*/
+        elbow.setPosition(0.12); //tiny
+
     }
 
     public class ElbowUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            elbow.setPosition(0.48);
+            elbow.setPosition(0.12);
             return false;
         }
     }
@@ -35,7 +32,7 @@ public class Elbow {
     public class DownElbow implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            elbow.setPosition(0.265);
+            elbow.setPosition(0);
             return false;
         }
     }

@@ -35,8 +35,8 @@ public class TestRedLeft extends LinearOpMode {
 
     public static double lineToY = -31.5;
     public static int elevatorUpPos = 330;
-    public static int elevatorDownPos = 280;
-    public static double strafeToX= -50;
+    public static int elevatorDownPos = 260;
+    public static double strafeToX= -65;
 
 
     public class DistnaceTest {
@@ -81,6 +81,13 @@ public class TestRedLeft extends LinearOpMode {
     public class ElevatorTest {
 
         private DcMotor elevator;
+        static final double     COUNTS_PER_MOTOR_REV    = 28.0;
+        static final double     DRIVE_GEAR_REDUCTION    = 30.21;
+        static final double     PULLEY_DIAMETER_MM = 46;  // ToDo: Measure and Change. 46 mm
+        static final double     WHEEL_CIRCUMFERENCE_MM  = PULLEY_DIAMETER_MM * Math.PI;
+        static final double     COUNTS_PER_WHEEL_REV    = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;
+        static final double     COUNTS_PER_MM           = COUNTS_PER_WHEEL_REV / WHEEL_CIRCUMFERENCE_MM;
+        //double ticksPerRev = 0.0;
 
         public ElevatorTest(HardwareMap hardwareMap) {
 
@@ -88,8 +95,7 @@ public class TestRedLeft extends LinearOpMode {
             telemetry.update();
             elevator = hardwareMap.get(DcMotor.class, "elevator");
             elevator.setDirection(DcMotorSimple.Direction.REVERSE);
-           // double ticksPerRev= elevator.getMotorType().getTicksPerRev();
-
+            //ticksPerRev = elevator.getMotorType().getTicksPerRev();
 
             elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -126,7 +132,9 @@ public class TestRedLeft extends LinearOpMode {
                     return false;
                 }*/
 
-                uppos = getElevatorEncoderUpDistnace(uppos);
+                uppos = (int)(uppos * COUNTS_PER_MM);
+
+                //uppos = getElevatorEncoderUpDistnace(uppos);
 
                 elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -140,7 +148,7 @@ public class TestRedLeft extends LinearOpMode {
 
             }
 
-            private int getElevatorEncoderUpDistnace(int targetDistance) {
+           /* private int getElevatorEncoderUpDistnace(int targetDistance) {
 
                 double COUNTS_PER_MOTOR_REV    = 28.0;
                 double DRIVE_GEAR_REDUCTION    = 30.21;
@@ -169,7 +177,7 @@ public class TestRedLeft extends LinearOpMode {
 
                 return distance2MoveInMM;
 
-            }
+            }*/
 
 
         }
@@ -201,14 +209,15 @@ public class TestRedLeft extends LinearOpMode {
                     return false;
                 }*/
 
-                downpos = getElevatorEncoderDownDistnace (downpos);
+                //downpos = getElevatorEncoderDownDistnace (downpos);
+                downpos = (int)(downpos * COUNTS_PER_MM);
 
                 elevator.setTargetPosition(downpos);
                 elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elevator.setPower(-1.0);
                 return false;
             }
-            private int getElevatorEncoderDownDistnace(int targetDistance) {
+           /* private int getElevatorEncoderDownDistnace(int targetDistance) {
 
                 double COUNTS_PER_MOTOR_REV    = 28.0;
                 double DRIVE_GEAR_REDUCTION    = 30.21;
@@ -237,7 +246,7 @@ public class TestRedLeft extends LinearOpMode {
 
                 return distance2MoveInMM;
 
-            }
+            }*/
 
         }
         public Action elevatorDown(int elevatorDownPos){
@@ -307,7 +316,7 @@ public class TestRedLeft extends LinearOpMode {
         public class OpenIntake implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                intake.setPosition(0.52);
+                intake.setPosition(0.4);
                 return false;
             }
         }
@@ -413,8 +422,8 @@ public class TestRedLeft extends LinearOpMode {
                 .waitSeconds(2).build();
 
         */
-        Action waitAction = drive.actionBuilder(drive.pose)
-                .waitSeconds(2).build();
+        /*Action waitAction = drive.actionBuilder(drive.pose)
+                .waitSeconds(2).build();*/
 
        /* Action backAction = drive.actionBuilder(new Pose2d(-30, -55, Math.toRadians(90)))
                 .turn(Math.toRadians(-90))
@@ -435,25 +444,46 @@ public class TestRedLeft extends LinearOpMode {
         );
 
         double chamberDistance =  distance.getDistance();
+
+        /*Action lenthAdjustmentAction = null;
+
+        if(chamberDistance < 8 ) {
+            lineToY =lineToY - 1;
+
+            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
+                    .lineToY(lineToY)
+                    .build();
+
+                    Actions.runBlocking(
+                            new SequentialAction(
+                            )
+                    );
+
+        } else  if(chamberDistance > 9 ) {
+            lineToY =lineToY - 1;
+            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
+                    .lineToY(lineToY)
+                    .build();
+
+                    Actions.runBlocking(
+                            new SequentialAction(
+                            )
+                    );
+
+        }*/
+
         telemetry.addLine("chamberDistance: "+chamberDistance);
         telemetry.update();
 
-        Action step2Action = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(strafeToX, lineToY))
-                .build();
-
-
         Actions.runBlocking(
                 new SequentialAction(
-                       // elbow.downElbow(),
                         elevator.elevatorDown(elevatorDownPos),
-                       // new SleepAction(1),
                         elbow.downElbow(),
                         new SleepAction(1),
-                        intake.openIntake(),
-                        elbow.upEobow(),
-                        elevator.elevatorDown(0)
-                       // step2Action,
+                        intake.openIntake()
+                       // elbow.upEobow(),
+                        //elevator.elevatorDown(0)
+
                        /* new ParallelAction(
                                 elevator.elevatorDown(0)
                         )*/
@@ -462,9 +492,43 @@ public class TestRedLeft extends LinearOpMode {
                         intake.closeIntake(),
                         elbow.upEobow()*/
 
+              )
+        );
+        /*
+
+        Action backAction = drive.actionBuilder(drive.pose)
+                .lineToY(lineToY - 1)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        backAction
                 )
         );
+*/
+        Action step2Action = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(strafeToX, lineToY))
+                .build();
 
+        Actions.runBlocking(
+                new SequentialAction(
+
+                        step2Action,
+                        new SleepAction(1),
+                        elbow.upEobow(),
+                        elevator.elevatorDown(0),
+                        new SleepAction(1),
+                       intake.closeIntake()
+                       /* new ParallelAction(
+                                elevator.elevatorDown(0)
+                        )*/
+                       /* elevator.elevatorDown(0),
+                        elbow.downElbow(),
+                        intake.closeIntake(),
+                        elbow.upEobow()*/
+
+              )
+        );
 
 
        telemetry.addLine("end autonomous ");

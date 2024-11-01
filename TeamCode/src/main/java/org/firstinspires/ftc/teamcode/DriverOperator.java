@@ -152,11 +152,11 @@ public class DriverOperator extends OpMode {
 
 
         if(gamepad2.dpad_up) {
-            telemetry.addLine("gamepad2.dpad_down 5.4");
-            elbow.setPosition(0.32); // elbow up/ elbow_end
+            telemetry.addLine("gamepad2.dpad_up 0.32");
+            elbow.setPosition(0.32); // elbow down/ elbow_end
         } else if(gamepad2.dpad_down){
-            telemetry.addLine("gamepad2.dpad_up 0");
-            //elbow.setPosition(0.1); //elbow down //tiney elbow
+            telemetry.addLine("gamepad2.dpad_down 0");
+            //elbow.setPosition(0.1); //elbow up //tiney elbow
             elbow.setPosition(0); //elbow down/ elbow_start
         }else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");

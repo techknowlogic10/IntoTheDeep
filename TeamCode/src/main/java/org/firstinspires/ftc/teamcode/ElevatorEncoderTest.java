@@ -18,7 +18,7 @@ public class ElevatorEncoderTest extends LinearOpMode {
     private Servo elbow;
     private Servo intake;
 
-    public static int targetDistance = 350;
+    public static int targetDistance = 330;
 
    private DcMotorEx elevatorEx; //ToDo: to test Velocity
 

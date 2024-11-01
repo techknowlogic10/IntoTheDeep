@@ -9,14 +9,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
 
-private Servo intake;
+private Servo intake = null;
 
 public Intake(HardwareMap hardwareMap) {
     intake = hardwareMap.get(Servo.class, "intake");
     intake.setDirection(Servo.Direction.REVERSE);
     intake.setPosition(0.85);
-    /*telemetry.addLine(" Construcor Intake");
-    telemetry.update();*/
 }
 
 public class CloseIntake implements Action {

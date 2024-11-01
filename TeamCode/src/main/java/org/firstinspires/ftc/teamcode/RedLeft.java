@@ -4,59 +4,178 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-
 
 
 @Config
 @Autonomous
 public class RedLeft extends LinearOpMode {
 
-    Servo elbow = null;
-    Servo intake = null;
-    DcMotor elevator = null;
+    public static double lineToY = -31.5;
+    public static int elevatorUpPos = 330;
+    public static int elevatorDownPos = 260;
+    public static double strafeToX= -55;
+    public static double spinetToX= -35;
+    public static double spinetToY = 50;
+    public static double spinetToTangent = 25;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        elbow = hardwareMap.get(Servo.class, "elbow");
-        elbow.scaleRange(0,1);
-        elbow.setPosition(0.53);
-
-        intake = hardwareMap.get(Servo.class, "intake");
-        intake.scaleRange(0,1);
-        intake.setPosition(0.9);
-
-        elevator = hardwareMap.get(DcMotor.class, "elevator");
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+        /*Elevator elevator = new Elevator(hardwareMap);
+        Elbow elbow = new Elbow(hardwareMap);
+        Intake intake = new Intake(hardwareMap);
+        DistanceSensor distance = new DistanceSensor(hardwareMap);
+        */
 
 
-        //Pose2d initialPose = new Pose2d(-23,-54,Math.toRadians(90));
-        Pose2d initialPose = new Pose2d(-10, -55, Math.toRadians(90));
-        MecanumDrive drive = new MecanumDrive(hardwareMap,initialPose);
-
+        while (!isStopRequested() && !opModeIsActive()) {
+            // int position = visionOutputPosition;
+            //telemetry.addData("Position during Init", position);
+            telemetry.addLine("!isStopRequested() && !opModeIsActive()");
+            telemetry.update();
+        }
 
         telemetry.addData(">>", "Press start to continue");
         telemetry.update();
-
         waitForStart();
 
+        if (isStopRequested()) {
+            telemetry.addLine("isStopRequested");
+            telemetry.update();
+            return;
+        }
 
-        TrajectoryActionBuilder path1 = drive.actionBuilder(initialPose)
-                .lineToY(-24)
-                .turn(Math.toRadians(90))
-                        .lineToX(-48);
+        Pose2d initialPose = new Pose2d(-10, -55, Math.toRadians(90));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+
+        // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
+        Action step1Action = drive.actionBuilder(initialPose)
+                .lineToY(lineToY)
+                .build();
+
+      /*  Action trajectoryActionCloseOut = tab1.fresh()
+                 .build();*/
+
+        /* Action waitAction = drive.actionBuilder(new Pose2d(-10, -33, Math.toRadians(90)))
+                .waitSeconds(2).build();
+
+        */
+        /*Action waitAction = drive.actionBuilder(drive.pose)
+                .waitSeconds(2).build();*/
+
+       /* Action backAction = drive.actionBuilder(new Pose2d(-30, -55, Math.toRadians(90)))
+                .turn(Math.toRadians(-90))
+                .splineTo(new Vector2d(30, 12),0).build();
+               // .lineToY(-51).build();
+       */
+
+        telemetry.addLine("2. trajectoryActionChosen");
+        telemetry.update();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                       // elevator.elevatorUp(elevatorUpPos),
+                       // new SleepAction(1),
+                        step1Action
+                )
+        );
+
+        //double chamberDistance =  distance.getDistance();
+
+        /*Action lenthAdjustmentAction = null;
+
+        if(chamberDistance < 8 ) {
+            lineToY =lineToY - 1;
+
+            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
+                    .lineToY(lineToY)
+                    .build();
+
+                    Actions.runBlocking(
+                            new SequentialAction(
+                            )
+                    );
+
+        } else  if(chamberDistance > 9 ) {
+            lineToY =lineToY - 1;
+            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
+                    .lineToY(lineToY)
+                    .build();
+
+                    Actions.runBlocking(
+                            new SequentialAction(
+                            )
+                    );
+
+        }*/
+
+       /* telemetry.addLine("chamberDistance: "+chamberDistance);
+        telemetry.update();*/
+
+       /* Actions.runBlocking(
+                new SequentialAction(
+                       // elevator.elevatorDown(elevatorDownPos),
+                       // elbow.downElbow(),
+                        new SleepAction(1)
+                       // intake.openIntake()
+                        // elbow.upEobow(),
+                        //elevator.elevatorDown(0)
+
+                       /* new ParallelAction(
+                             elevator.elevatorDown(0)
+                        )*/
+                       /* elevator.elevatorDown(0),
+                        elbow.downElbow(),
+                        intake.closeIntake(),
+                        elbow.upEobow()*/
+
+            /*    )
+        );*/
+        /*
+
+        Action backAction = drive.actionBuilder(drive.pose)
+                .lineToY(lineToY - 1)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        backAction
+                )
+        );
+*/
+        Action step2Action = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(strafeToX, lineToY))
+                .waitSeconds(1)
+               /* .turn(Math.toRadians(-120))
+                .waitSeconds(1)
+                .turn(Math.toRadians(120))
+                .waitSeconds(1)*/
+                .splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        step2Action
+                      //  new SleepAction(1),
+                       // elbow.upEobow(),
+                      //  elevator.elevatorDown(0),
+                       // new SleepAction(1),
+                       // intake.closeIntake()
+
+                )
+        );
 
 
-        Actions.runBlocking(new SequentialAction(path1.build()));
-
+        telemetry.addLine("end autonomous ");
+        telemetry.update();
 
     }
+
 }
+

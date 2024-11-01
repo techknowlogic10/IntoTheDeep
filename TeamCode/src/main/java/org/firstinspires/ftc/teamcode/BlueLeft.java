@@ -51,7 +51,7 @@ public class BlueLeft extends LinearOpMode {
             return;
         }
 
-        Pose2d initialPose = new Pose2d(10, 55, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(10, 55, Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
@@ -151,7 +151,7 @@ public class BlueLeft extends LinearOpMode {
 */
         Action step2Action = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(strafeToX, lineToY))
-                .waitSeconds(1)
+                //.waitSeconds(1)
                 /* .turn(Math.toRadians(-120))
                  .waitSeconds(1)
                  .turn(Math.toRadians(120))

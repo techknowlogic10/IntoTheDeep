@@ -151,7 +151,7 @@ public class RedLeft extends LinearOpMode {
 */
         Action step2Action = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(strafeToX, lineToY))
-                .waitSeconds(1)
+               // .waitSeconds(1)
                /* .turn(Math.toRadians(-120))
                 .waitSeconds(1)
                 .turn(Math.toRadians(120))

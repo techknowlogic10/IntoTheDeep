@@ -59,11 +59,11 @@ public class MeepMeepTesting {
 
 
 
-        myBlueLeftBot.runAction(myBlueLeftBot.getDrive().actionBuilder(new Pose2d(-10, 55, Math.toRadians(-90)))
+        myBlueLeftBot.runAction(myBlueLeftBot.getDrive().actionBuilder(new Pose2d(10, 55, Math.toRadians(-90)))
                 .lineToY(30)
-                .turn(Math.toRadians(-90))
-                .lineToX(-50)
-                .turn(Math.toRadians(-90))
+                .turn(Math.toRadians(90))
+                .lineToX(50)
+                .turn(Math.toRadians(90))
                 .lineToY(55)
                 .build());
 
@@ -75,13 +75,13 @@ public class MeepMeepTesting {
 
 
 
-        myBlueRightBot.runAction(myBlueRightBot.getDrive().actionBuilder(new Pose2d(10, 55, Math.toRadians(-90)))
+       /* myBlueRightBot.runAction(myBlueRightBot.getDrive().actionBuilder(new Pose2d(10, 55, Math.toRadians(-90)))
                 .lineToY(30)
                 .turn(Math.toRadians(90))
                 .lineToX(50)
                 .turn(Math.toRadians(90))
                 .lineToY(55)
-                .build());
+                .build());*/
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)

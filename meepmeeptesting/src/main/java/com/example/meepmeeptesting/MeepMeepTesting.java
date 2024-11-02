@@ -18,7 +18,7 @@ public class MeepMeepTesting {
 
 
         myRedLeftBot.runAction(myRedLeftBot.getDrive().actionBuilder(new Pose2d(-10, -55, Math.toRadians(90)))
-               .lineToY(-30)
+               /*.lineToY(-30)
                .turn(Math.toRadians(90))
                .lineToX(-50)
                .turn(Math.toRadians(90))
@@ -33,8 +33,14 @@ public class MeepMeepTesting {
                 .turn(Math.toRadians(-90))
                 .lineToY(-55)
                 .turn(Math.toRadians(180))
-                .splineTo(new Vector2d(-22, -12),0)
-               .build());
+                .splineTo(new Vector2d(-22, -12),0)*/
+                .lineToY(-31.5)
+                .strafeTo(new Vector2d(-55,-31.5))
+                .setTangent(Math.toRadians(90) - 1e-6)
+                .lineToY(-10)
+                .turn(Math.toRadians(-90))
+                .lineToX(-35)
+                .build());
 
         RoadRunnerBotEntity myRedRightBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -44,11 +50,15 @@ public class MeepMeepTesting {
 
 
         myRedRightBot.runAction(myRedRightBot.getDrive().actionBuilder(new Pose2d(10, -55, Math.toRadians(90)))
-                .lineToY(-30)
+                /*.lineToY(-30)
                 .turn(Math.toRadians(-90))
                 .lineToX(50)
                 .turn(Math.toRadians(-90))
-                .lineToY(-55)
+                .lineToY(-55) */
+                .lineToY(-31.5)
+                .strafeTo(new Vector2d(55,-31.5))
+                .setTangent(Math.toRadians(90) - 1e-6)
+                .lineToY(-50)
                 .build());
 
         // Declare out second bot

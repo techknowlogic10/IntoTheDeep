@@ -23,16 +23,16 @@ public class BlueLeft extends LinearOpMode {
     public static double spinetToX= 35;
     public static double spinetToY = -50;
     public static double spinetToTangent = -25;
+    public static double lineToY1 = 10;
+    public static double lineToX1 = 35;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        /*Elevator elevator = new Elevator(hardwareMap);
+        Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
         DistanceSensor distance = new DistanceSensor(hardwareMap);
-        */
-
 
         while (!isStopRequested() && !opModeIsActive()) {
             // int position = visionOutputPosition;
@@ -80,8 +80,8 @@ public class BlueLeft extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        // elevator.elevatorUp(elevatorUpPos),
-                        // new SleepAction(1),
+                        elevator.elevatorUp(elevatorUpPos),
+                        new SleepAction(0.5),
                         step1Action
                 )
         );
@@ -118,12 +118,12 @@ public class BlueLeft extends LinearOpMode {
        /* telemetry.addLine("chamberDistance: "+chamberDistance);
         telemetry.update();*/
 
-       /* Actions.runBlocking(
+       Actions.runBlocking(
                 new SequentialAction(
-                       // elevator.elevatorDown(elevatorDownPos),
-                       // elbow.downElbow(),
-                        new SleepAction(1)
-                       // intake.openIntake()
+                       elevator.elevatorDown(elevatorDownPos),
+                       elbow.downElbow(),
+                        new SleepAction(0.5),
+                       intake.openIntake()
                         // elbow.upEobow(),
                         //elevator.elevatorDown(0)
 
@@ -135,8 +135,8 @@ public class BlueLeft extends LinearOpMode {
                         intake.closeIntake(),
                         elbow.upEobow()*/
 
-            /*    )
-        );*/
+              )
+        );
         /*
 
         Action backAction = drive.actionBuilder(drive.pose)
@@ -149,14 +149,19 @@ public class BlueLeft extends LinearOpMode {
                 )
         );
 */
-        Action step2Action = drive.actionBuilder(drive.pose)
+       /* Action step2Action = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(strafeToX, lineToY))
+                .setTangent(Math.toRadians(-90))
                 //.waitSeconds(1)
                 /* .turn(Math.toRadians(-120))
                  .waitSeconds(1)
                  .turn(Math.toRadians(120))
                  .waitSeconds(1)*/
-                .splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)
+                //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)
+             /*   .lineToY(lineToY1)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(1)
+                .lineToX(lineToX1)
                 .build();
 
         Actions.runBlocking(
@@ -169,7 +174,7 @@ public class BlueLeft extends LinearOpMode {
                         // intake.closeIntake()
 
                 )
-        );
+        );*/
 
 
         telemetry.addLine("end autonomous ");

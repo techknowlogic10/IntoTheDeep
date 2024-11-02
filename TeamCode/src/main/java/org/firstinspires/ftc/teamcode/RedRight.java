@@ -19,8 +19,9 @@ public class RedRight extends LinearOpMode {
     public static double lineToY = -31.5;
     public static int elevatorUpPos = 330;
     public static int elevatorDownPos = 260;
-    public static double strafeToX = 65;
-    public static double backLineToY = -55;
+    public static double strafeToX = 55;
+    public static double strafeToY = -31.5;
+    public static double backLineToY = -50;
 
     /*public static double spinetToX= 35;
     public static double spinetToY = -50;
@@ -29,12 +30,10 @@ public class RedRight extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        /*Elevator elevator = new Elevator(hardwareMap);
+        Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
         DistanceSensor distance = new DistanceSensor(hardwareMap);
-        */
-
 
         while (!isStopRequested() && !opModeIsActive()) {
             // int position = visionOutputPosition;
@@ -57,7 +56,7 @@ public class RedRight extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
-        Action step1Action = drive.actionBuilder(initialPose)
+        Action step1Action = drive.actionBuilder(drive.pose)
                 .lineToY(lineToY)
                 .build();
 
@@ -82,8 +81,8 @@ public class RedRight extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        // elevator.elevatorUp(elevatorUpPos),
-                        // new SleepAction(1),
+                        elevator.elevatorUp(elevatorUpPos),
+                         new SleepAction(0.5),
                         step1Action
                 )
         );
@@ -120,12 +119,12 @@ public class RedRight extends LinearOpMode {
        /* telemetry.addLine("chamberDistance: "+chamberDistance);
         telemetry.update();*/
 
-       /* Actions.runBlocking(
+        Actions.runBlocking(
                 new SequentialAction(
-                       // elevator.elevatorDown(elevatorDownPos),
-                       // elbow.downElbow(),
-                        new SleepAction(1)
-                       // intake.openIntake()
+                       elevator.elevatorDown(elevatorDownPos),
+                       elbow.downElbow(),
+                        new SleepAction(0.5),
+                        intake.openIntake()
                         // elbow.upEobow(),
                         //elevator.elevatorDown(0)
 
@@ -137,8 +136,8 @@ public class RedRight extends LinearOpMode {
                         intake.closeIntake(),
                         elbow.upEobow()*/
 
-            /*    )
-        );*/
+                )
+        );
         /*
 
         Action backAction = drive.actionBuilder(drive.pose)
@@ -151,14 +150,15 @@ public class RedRight extends LinearOpMode {
                 )
         );
 */
-        Action step2Action = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(strafeToX, lineToY))
-                .waitSeconds(1)
+      /*  Action step2Action = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(strafeToX, strafeToY))
+                .setTangent(Math.toRadians(90))
+               // .waitSeconds(1)
                 /* .turn(Math.toRadians(-120))
                  .waitSeconds(1)
                  .turn(Math.toRadians(120))
                  .waitSeconds(1)*/
-                .lineToY(backLineToY)
+             /*   .lineToY(backLineToY)
                 //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)
                 .build();
 
@@ -172,7 +172,7 @@ public class RedRight extends LinearOpMode {
                         // intake.closeIntake()
 
                 )
-        );
+        );*/
 
 
         telemetry.addLine("end autonomous ");

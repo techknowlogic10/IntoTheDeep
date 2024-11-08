@@ -16,9 +16,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class RedLeft extends LinearOpMode {
 
-    public static double lineToY = -31.5;
-    public static int elevatorUpPos = 330;
-    public static int elevatorDownPos = 260;
+    public static double lineToY = -31.45;
+    public static int elevatorUpPos = 365;
+    public static int elevatorDownPos = 250;
     public static double strafeToX= -55;
     public static double spinetToX= -35;
     public static double spinetToY = 50;
@@ -56,6 +56,13 @@ public class RedLeft extends LinearOpMode {
         Pose2d initialPose = new Pose2d(-10, -55, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
+        Actions.runBlocking(
+                new SequentialAction(
+                        elbow.straightEobow(),
+                        new SleepAction(0.5)
+                )
+        );
+
         // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
         Action step1Action = drive.actionBuilder(initialPose)
                 .lineToY(lineToY)
@@ -88,11 +95,16 @@ public class RedLeft extends LinearOpMode {
                 )
         );
 
-        //double chamberDistance =  distance.getDistance();
+        /*double chamberDistance =  distance.getDistance();
+        telemetry.addLine("chamberDistance: "+chamberDistance);
+        telemetry.update();
 
-        /*Action lenthAdjustmentAction = null;
+        System.out.println("chamberDistance: "+chamberDistance);
 
-        if(chamberDistance < 8 ) {
+
+        Action lenthAdjustmentAction = null;
+
+        if(chamberDistance < 8.0) {
             lineToY =lineToY - 1;
 
             lenthAdjustmentAction = drive.actionBuilder(drive.pose)
@@ -101,10 +113,11 @@ public class RedLeft extends LinearOpMode {
 
                     Actions.runBlocking(
                             new SequentialAction(
+                                    lenthAdjustmentAction
                             )
                     );
 
-        } else  if(chamberDistance > 9 ) {
+        } else if(chamberDistance > 9.0 ) {
             lineToY =lineToY - 1;
             lenthAdjustmentAction = drive.actionBuilder(drive.pose)
                     .lineToY(lineToY)
@@ -112,6 +125,7 @@ public class RedLeft extends LinearOpMode {
 
                     Actions.runBlocking(
                             new SequentialAction(
+                                    lenthAdjustmentAction
                             )
                     );
 

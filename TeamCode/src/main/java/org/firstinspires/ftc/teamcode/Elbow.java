@@ -14,14 +14,16 @@ public class Elbow {
     public Elbow(HardwareMap hardwareMap) {
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-        elbow.setPosition(0.12); //tiny
+        elbow.setDirection(Servo.Direction.REVERSE);
+        elbow.scaleRange(0.2,0.6);
+        elbow.setPosition(0.2); //tiny
 
     }
 
     public class ElbowUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            elbow.setPosition(0.12);
+            elbow.setPosition(0.34);
             return false;
         }
     }
@@ -32,12 +34,23 @@ public class Elbow {
     public class DownElbow implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            elbow.setPosition(0);
+            elbow.setPosition(0.475);
             return false;
         }
     }
     public Action downElbow() {
         return new Elbow.DownElbow();
+    }
+
+    public class ElbowStraight implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            elbow.setPosition(0.42);
+            return false;
+        }
+    }
+    public Action straightEobow() {
+        return new Elbow.ElbowStraight();
     }
 
 }

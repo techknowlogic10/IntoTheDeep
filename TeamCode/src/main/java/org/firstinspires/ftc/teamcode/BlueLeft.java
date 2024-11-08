@@ -16,9 +16,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueLeft extends LinearOpMode {
 
-    public static double lineToY = 31.5;
-    public static int elevatorUpPos = 330;
-    public static int elevatorDownPos = 260;
+    public static double lineToY = 31.55;
+    public static int elevatorUpPos = 365;
+    public static int elevatorDownPos = 250;
     public static double strafeToX= 55;
     public static double spinetToX= 35;
     public static double spinetToY = -50;
@@ -53,6 +53,13 @@ public class BlueLeft extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(10, 55, Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        elbow.straightEobow(),
+                        new SleepAction(0.5)
+                )
+        );
 
         // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
         Action step1Action = drive.actionBuilder(initialPose)

@@ -21,6 +21,7 @@ public class DriverOperator extends OpMode {
    private DcMotor backRight = null;
    private DcMotor elevator = null;
    private DcMotor slider = null;
+    private DcMotor lift = null;
 
   /*  private DcMotorEx encoderFrontLeft = null;
     private DcMotorEx encoderFrontRight = null;
@@ -63,11 +64,16 @@ public class DriverOperator extends OpMode {
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //slider.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        lift = hardwareMap.dcMotor.get("lift");
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-        elbow.scaleRange(0,1);
-       elbow.setPosition(0.32); //elbow up tiny
+        elbow.setDirection(Servo.Direction.REVERSE);
+        elbow.scaleRange(0.2,0.6);
+        elbow.setPosition(0.42); //elbow up tiny
       //  elbow.setPosition(0.48); //elbow up
 
         intake = hardwareMap.get(Servo.class, "intake");
@@ -150,17 +156,21 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("elevatorPower: "+ elevatorPower);
         elevator.setPower(elevatorPower);
 
+        double liftPower = gamepad1.right_stick_y * 2;
+        telemetry.addLine("liftPower: "+ liftPower);
+        lift.setPower(liftPower);
+
 
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
-            elbow.setPosition(0.32); // elbow down/ elbow_end
+            elbow.setPosition(0.34); // elbow down/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
-            elbow.setPosition(0); //elbow down/ elbow_start
+            elbow.setPosition(0.475); //elbow down/ elbow_start
         }else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
-            elbow.setPosition(0.12); //elbow 90-parallal/ elbow_middle
+            elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
         }
 
         if(gamepad2.left_bumper){

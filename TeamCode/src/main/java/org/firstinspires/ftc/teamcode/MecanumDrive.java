@@ -132,7 +132,7 @@ public final class MecanumDrive {
 
         //Tunning 10/21/2025
         // sample drive model parameters --Durgha Test
-        public double inPerTick = 0.0185692400538508; // 0.0383509108341323; //0.0019792182;
+       /* public double inPerTick = 0.0185692400538508; // 0.0383509108341323; //0.0019792182;
         public double lateralInPerTick = 0.0200672252044349; // 0.0392850127676291; // inPerTick;
         public double trackWidthTicks = 1474.7125327248573;
 
@@ -158,17 +158,17 @@ public final class MecanumDrive {
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
         public double headingVelGain = 0.0; // shared with turn
+        */
+        //tunning on 11/05
 
-        //tunning on 10/31
-        /*
-        public double inPerTick = 0.18938;
-        public double lateralInPerTick = 0.026183;
-        public double trackWidthTicks = 1473.9679760144818;
+        public double inPerTick = 0.018561485;
+        public double lateralInPerTick = 0.021031416;
+        public double trackWidthTicks = 1477.0886244488113;
 
         // feedforward parameters (in tick units)
-        public double kS = 1.5456907269681714;
-        public double kV = 0.004166427604474627;
-        public double kA = 0.0015;
+        public double kS = 1.4289667573759184;
+        public double kV = 0.0042889284194951895;
+        public double kA = 0.0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -180,13 +180,13 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 1;
-        public double lateralGain = 1;
-        public double headingGain = 2; // shared with turn
+        public double axialGain = 3;
+        public double lateralGain = 2;
+        public double headingGain = 3; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.0; // shared with turn*/
+        public double headingVelGain = 0.0; // shared with turn
 
     }
 

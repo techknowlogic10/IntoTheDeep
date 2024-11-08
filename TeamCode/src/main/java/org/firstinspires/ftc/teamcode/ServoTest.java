@@ -22,14 +22,14 @@ public class ServoTest extends OpMode {
   //  public static double intake_sr_end = 1;
     public static double intake_initial_pos = 0.4;
 
-    public static double elbow_start = 0.265; // 0.1; tiny claw
-    public static double elbow_end = 0.48;
+    public static double elbow_start = 0.475; // 0.1; tiny claw//down
+    public static double elbow_end = 0.34; //up
 
    // public static double elbow_sr_start = 0;
    // public static double elbow_sr_end = 1;
-    public static double elbow_initial_pos = 0.48;
+    public static double elbow_initial_pos = 0.42;
 
-    public static double elbow_middle = 0.38;
+    public static double elbow_middle = 0.42;
 
 
 
@@ -38,10 +38,10 @@ public class ServoTest extends OpMode {
 
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-       // elbow.setDirection(Servo.Direction.REVERSE);
+       elbow.setDirection(Servo.Direction.REVERSE);
 
         // elbow.setPosition(1);
-        elbow.scaleRange(0,1);
+       elbow.scaleRange(0.2,0.6);
         elbow.setPosition(elbow_initial_pos);
 
         //intake = hardwareMap.servo.get("intake");
@@ -55,12 +55,13 @@ public class ServoTest extends OpMode {
     public void loop() {
 
         if(gamepad2.dpad_up) {
-            telemetry.addLine("gamepad2.dpad_down: "+elbow_end);
+            telemetry.addLine("gamepad2.dpad_up: "+elbow_end);
             elbow.setPosition(elbow_end);
         } else if(gamepad2.dpad_down){
 
-            telemetry.addLine("gamepad2.dpad_up: "+elbow_start);
+            telemetry.addLine("gamepad2.dpad_down: "+elbow_start);
             elbow.setPosition(elbow_start);
+
         } else if(gamepad2.dpad_left){
 
             telemetry.addLine("gamepad2.dpad_left 0.3");

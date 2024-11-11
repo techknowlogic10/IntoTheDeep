@@ -30,8 +30,8 @@ public class TurnTest extends OpMode {
 
         if(gamepad2.dpad_up) {
             Action turnAction = drive.actionBuilder(drive.pose)
-                    //.turn(Math.toRadians(-90)).build();
-                    .turn(-90).build();
+                    .turn(Math.toRadians(-90)).build();
+                    //.turn(-90).build();
 
             Actions.runBlocking(
                     new SequentialAction(
@@ -41,8 +41,8 @@ public class TurnTest extends OpMode {
         } else if(gamepad2.dpad_down){
 
             Action turnAction = drive.actionBuilder(drive.pose)
-                   // .turn(Math.toRadians(90)).build();
-                           .turn(90).build();
+                   .turn(Math.toRadians(90)).build();
+                        //  .turn(90).build();
 
             Actions.runBlocking(
                     new SequentialAction(

@@ -73,7 +73,7 @@ public class DriverOperator extends OpMode {
         elbow = hardwareMap.get(Servo.class, "elbow");
         elbow.setDirection(Servo.Direction.REVERSE);
         elbow.scaleRange(0.2,0.6);
-        elbow.setPosition(0.42); //elbow up tiny
+        elbow.setPosition(0.34); //elbow up tiny
       //  elbow.setPosition(0.48); //elbow up
 
         intake = hardwareMap.get(Servo.class, "intake");
@@ -146,24 +146,9 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("elevator encoder: "+ elevator.getCurrentPosition());
         telemetry.addLine("encoderElevator encoder: "+ encoderElevator.getCurrentPosition());
 
-
-
-        double sliderPower = gamepad2.left_stick_y;
-        telemetry.addLine("sliderPower: "+ sliderPower);
-        slider.setPower((sliderPower));
-
-        double elevatorPower = gamepad2.right_stick_y;
-        telemetry.addLine("elevatorPower: "+ elevatorPower);
-        elevator.setPower(elevatorPower);
-
-        double liftPower = gamepad1.right_stick_y * 2;
-        telemetry.addLine("liftPower: "+ liftPower);
-        lift.setPower(liftPower);
-
-
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
-            elbow.setPosition(0.34); // elbow down/ elbow_end
+            elbow.setPosition(0.34); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
@@ -186,6 +171,18 @@ public class DriverOperator extends OpMode {
             telemetry.addLine("gamepad2.dpad_right");
             intake.setPosition(0.2); //intake wide open
         }
+
+        double sliderPower = gamepad2.left_stick_y;
+        telemetry.addLine("sliderPower: "+ sliderPower);
+        slider.setPower((sliderPower));
+
+        double elevatorPower = gamepad2.right_stick_y;
+        telemetry.addLine("elevatorPower: "+ elevatorPower);
+        elevator.setPower(elevatorPower);
+
+        double liftPower = gamepad1.right_stick_y * 2;
+        telemetry.addLine("liftPower: "+ liftPower);
+        lift.setPower(liftPower);
 
         telemetry.update();
 

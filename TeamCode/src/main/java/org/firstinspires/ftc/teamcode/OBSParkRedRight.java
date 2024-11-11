@@ -5,7 +5,6 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -14,13 +13,21 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class RedRight extends LinearOpMode {
+public class OBSParkRedRight extends LinearOpMode {
 
-    public static double lineToY = -33.5; // -31.45;
-    public static int elevatorUpPos = 375;//365
-    public static int elevatorDownPos = 230; //250
-    public static double strafeToX = 55;
-    public static double strafeToY = -31.5;
+    public static double lineToY = -33.5;
+    public static int elevatorUpPos = 365;
+    public static int elevatorDownPos = 250;
+   // public static double strafeToX = 40;
+    public static double strafeToY = -31.45;
+    public static double strafeToX = 46;
+    public static double forward1LineToY = -8;
+
+    public static double strafe2ToX = 60;
+    public static double strafe3ToX = 70;
+    public static double strafe4ToX = 80;
+
+    //public static double strafeToY = 33.5;
     public static double backLineToY = -50;
 
     /*public static double spinetToX= 35;
@@ -89,7 +96,7 @@ public class RedRight extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         elevator.elevatorUp(elevatorUpPos),
-                         new SleepAction(0.5),
+                        new SleepAction(0.5),
                         step1Action
                 )
         );
@@ -128,8 +135,8 @@ public class RedRight extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                       elevator.elevatorDown(elevatorDownPos),
-                       elbow.downElbow(),
+                        elevator.elevatorDown(elevatorDownPos),
+                        elbow.downElbow(),
                         new SleepAction(0.5),
                         intake.openIntake()
                         // elbow.upEobow(),
@@ -157,16 +164,30 @@ public class RedRight extends LinearOpMode {
                 )
         );
 */
-      /*  Action step2Action = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(strafeToX, strafeToY))
-                .setTangent(Math.toRadians(90))
+        Action step2Action = drive.actionBuilder(drive.pose)
+               /* .strafeTo(new Vector2d(strafeToX, strafeToY))
+                .setTangent(Math.toRadians(90))*/
                // .waitSeconds(1)
                 /* .turn(Math.toRadians(-120))
                  .waitSeconds(1)
                  .turn(Math.toRadians(120))
                  .waitSeconds(1)*/
              /*   .lineToY(backLineToY)
-                //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)
+                //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)*/
+                .strafeTo(new Vector2d(strafeToX, lineToY))
+                .setTangent(Math.toRadians(90))
+                .lineToY(forward1LineToY)
+                .strafeTo(new Vector2d(strafe2ToX, forward1LineToY))
+                .setTangent(Math.toRadians(90))
+                .lineToY(backLineToY) //57
+                .lineToY(forward1LineToY) //57
+                .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
+                .setTangent(Math.toRadians(90))
+                .lineToY(backLineToY) //57
+                .lineToY(forward1LineToY)
+                .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
+                .setTangent(Math.toRadians(90))
+                .lineToY(backLineToY) //57
                 .build();
 
         Actions.runBlocking(
@@ -179,7 +200,7 @@ public class RedRight extends LinearOpMode {
                         // intake.closeIntake()
 
                 )
-        );*/
+        );
 
 
         telemetry.addLine("end autonomous ");

@@ -16,9 +16,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class RedLeft extends LinearOpMode {
 
-    public static double lineToY = -31.45;
-    public static int elevatorUpPos = 365;
-    public static int elevatorDownPos = 250;
+    public static double lineToY = -33.5; // -31.45;
+    public static int elevatorUpPos = 375;//365
+    public static int elevatorDownPos = 230; //250
     public static double strafeToX= -55;
     public static double spinetToX= -35;
     public static double spinetToY = 50;

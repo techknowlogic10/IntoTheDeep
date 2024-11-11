@@ -27,7 +27,7 @@ public class Elbow {
             return false;
         }
     }
-    public Action upEobow() {
+    public Action upElbow() {
         return new Elbow.ElbowUp();
     }
 

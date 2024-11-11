@@ -16,13 +16,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class BlueRight extends LinearOpMode {
 
-    public static double lineToY = 30.55;
+    public static double lineToY = 33.5;
    /* public static int elevatorUpPos = 330;
     public static int elevatorDownPos = 260; */
-    public static int elevatorUpPos = 365;
-    public static int elevatorDownPos = 250;
-    public static double strafeToX = -55;
-    public static double strafeToY = 31.5;
+   public static int elevatorUpPos = 375;//365
+    public static int elevatorDownPos = 230; //250
+    public static double strafeToX = 55;
+    public static double strafeToY = 33.5;
     public static double backLineToY = 50;
 
     /*public static double spinetToX= 35;
@@ -161,9 +161,11 @@ public class BlueRight extends LinearOpMode {
         );
 */
         /*Action step2Action = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(strafeToX, strafeToY))
+                .strafeTo(new Vector2d(strafeToX, lineToY))
                 .setTangent(Math.toRadians(-90))
-                // .waitSeconds(1)
+                 .waitSeconds(0.5)
+                .lineToY(backLineToY)
+
                 /* .turn(Math.toRadians(-120))
                  .waitSeconds(1)
                  .turn(Math.toRadians(120))

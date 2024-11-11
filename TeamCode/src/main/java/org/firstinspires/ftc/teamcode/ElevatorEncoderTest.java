@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@Disabled
+//@Disabled
 @Autonomous (name = "ElevatorEncoderTest")
 public class ElevatorEncoderTest extends LinearOpMode {
     private DcMotor elevator;
@@ -20,7 +20,7 @@ public class ElevatorEncoderTest extends LinearOpMode {
     private Servo elbow;
     private Servo intake;
 
-    public static int targetDistance = 330;
+    public static int targetDistance = 650;// 330;
 
    private DcMotorEx elevatorEx; //ToDo: to test Velocity
 
@@ -50,7 +50,8 @@ public class ElevatorEncoderTest extends LinearOpMode {
 
         elbow = hardwareMap.get(Servo.class, "elbow");
        // elbow.setDirection(Servo.Direction.REVERSE);
-        elbow.setPosition(0.12);
+        elbow.scaleRange(0.2,0.6);
+        elbow.setPosition(0.42); //elbow up tiny
 
         intake = hardwareMap.get(Servo.class, "intake");
         intake.setDirection(Servo.Direction.REVERSE);
@@ -74,10 +75,11 @@ public class ElevatorEncoderTest extends LinearOpMode {
         telemetry.update();
 
         System.out.println("BalaElevatorTest: Ticks per revolution: "+ ticksPerRev);
-
-        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        elevatorEx = hardwareMap.get(DcMotorEx.class, "elevator");
 
 
         elePos = 0;
@@ -91,7 +93,7 @@ public class ElevatorEncoderTest extends LinearOpMode {
         telemetry.update();
         System.out.println("BalaElevatorTest: distance2MoveInMM: "+ distance2MoveInMM);
 
-        move2Target(distance2MoveInMM, 0.8);
+       // move2Target(distance2MoveInMM, 1);
        // move2Target(-distance2Move, 0.25);
         telemetry.addData("BalaElevatorTest: elevator getCurrentPosition: ", elevator.getCurrentPosition());
         telemetry.update();
@@ -106,7 +108,7 @@ public class ElevatorEncoderTest extends LinearOpMode {
         // In this case, lets set the velocity to 175 RPM
 
         //ToDo: to test Velocity
-        /*
+
         double TPS; // Ticks per second
         TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV;
         elevatorEx.setVelocity(TPS);
@@ -120,7 +122,7 @@ public class ElevatorEncoderTest extends LinearOpMode {
             telemetry.addData("BalaElevatorTest: getCurrentPosition:", elevatorEx.getCurrentPosition());
             telemetry.update();
         }
-        */
+
     }
 
 

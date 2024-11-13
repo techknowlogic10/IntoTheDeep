@@ -23,6 +23,8 @@ public class DriverOperator extends OpMode {
    private DcMotor slider = null;
     private DcMotor lift = null;
 
+    Elevator elevatorObj = null;
+
   /*  private DcMotorEx encoderFrontLeft = null;
     private DcMotorEx encoderFrontRight = null;
     private DcMotorEx encoderBackLeft = null;
@@ -106,6 +108,8 @@ public class DriverOperator extends OpMode {
 
         elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        elevatorObj= new Elevator(hardwareMap);
+
     }
     @Override
     public void loop(){
@@ -172,7 +176,7 @@ public class DriverOperator extends OpMode {
             intake.setPosition(0.2); //intake wide open
         }
 
-        double sliderPower = gamepad2.left_stick_y;
+        double sliderPower = gamepad2.left_stick_y * 1.5;
         telemetry.addLine("sliderPower: "+ sliderPower);
         slider.setPower((sliderPower));
 
@@ -183,6 +187,34 @@ public class DriverOperator extends OpMode {
         double liftPower = gamepad1.right_stick_y * 2;
         telemetry.addLine("liftPower: "+ liftPower);
         lift.setPower(liftPower);
+
+        if (gamepad2.a){
+            telemetry.addLine("gamepad2.a: ");
+            elevatorObj.elevatorUp(650);
+        }
+        if (gamepad2.b){
+            telemetry.addLine("gamepad2.b: ");
+            elevatorObj.elevatorDown(0);
+        }
+
+        if (gamepad2.y){
+            telemetry.addLine("gamepad2.y: ");
+            elevatorObj.elevatorUp(185);
+        }
+        if (gamepad2.x){
+            telemetry.addLine("gamepad2.x: ");
+            elevatorObj.elevatorUp(375);
+        }
+
+        if (gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0){
+            telemetry.addLine("gamepad1.left_trigger  && gamepad2.right_trigger >0");
+            while(lift.isBusy()){
+                lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+        } else if (gamepad1.dpad_right){
+            telemetry.addLine("open the lock");
+
+        }
 
         telemetry.update();
 

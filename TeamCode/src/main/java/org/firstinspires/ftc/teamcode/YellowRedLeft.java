@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -27,6 +28,7 @@ public class YellowRedLeft extends LinearOpMode {
 
 
     public static double lineTo1X = -64.5;
+    public static double lineTo2X = -55;
     public static int elevatorTopPos = 650;
 
     //step2
@@ -43,7 +45,7 @@ public class YellowRedLeft extends LinearOpMode {
 
     public static double step8LineToY = -24;
 
-    public static int step9Angle = 110;
+    public static int step9Angle = 113;
 
     public static double step10LineToY = -38;
 
@@ -93,8 +95,22 @@ public class YellowRedLeft extends LinearOpMode {
                 )
         );
 
+       /* Actions.runBlocking(new SequentialAction(
+                elbow.upElbow(),
+                new ParallelAction(
+                        elevator.elevatorUp(elevatorTopPos),
+                        new SequentialAction(
+                                new SleepAction(1),
+                                step1Action,
+                                new SleepAction(0.5),
+                                intake.openIntake()
+                        )
+                )
+        ));*/
+
         Action step2Action = drive.actionBuilder(drive.pose)
                 .lineToX(lineTo1X)
+                //.lineToX(lineTo2X)
                 .build();
 
         Actions.runBlocking(

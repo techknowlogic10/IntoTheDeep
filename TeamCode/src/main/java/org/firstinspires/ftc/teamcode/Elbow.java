@@ -16,7 +16,7 @@ public class Elbow {
         elbow = hardwareMap.get(Servo.class, "elbow");
         elbow.setDirection(Servo.Direction.REVERSE);
         elbow.scaleRange(0.2,0.6);
-        elbow.setPosition(0.2); //tiny
+        elbow.setPosition(0.26); //tiny
 
     }
 

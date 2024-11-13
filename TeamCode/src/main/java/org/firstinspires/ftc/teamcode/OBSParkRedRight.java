@@ -30,6 +30,19 @@ public class OBSParkRedRight extends LinearOpMode {
     //public static double strafeToY = 33.5;
     public static double backLineToY = -50;
 
+    public static double backLineTo2Y = -45;
+    public static int turn1Angle = 180;
+
+    public static double strafe5ToX = 60;
+    public static double strafe5ToY = -45;
+    public static double lineTo5Y = -55;
+    public static int elevatorDown1Pos = 185;
+
+    public static double lineTo6Y = -50;
+    public static int turn2Angle = -180;
+
+
+
     /*public static double spinetToX= 35;
     public static double spinetToY = -50;
     public static double spinetToTangent = -25;*/
@@ -165,15 +178,6 @@ public class OBSParkRedRight extends LinearOpMode {
         );
 */
         Action step2Action = drive.actionBuilder(drive.pose)
-               /* .strafeTo(new Vector2d(strafeToX, strafeToY))
-                .setTangent(Math.toRadians(90))*/
-               // .waitSeconds(1)
-                /* .turn(Math.toRadians(-120))
-                 .waitSeconds(1)
-                 .turn(Math.toRadians(120))
-                 .waitSeconds(1)*/
-             /*   .lineToY(backLineToY)
-                //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent)*/
                 .strafeTo(new Vector2d(strafeToX, lineToY))
                 .setTangent(Math.toRadians(90))
                 .lineToY(forward1LineToY)
@@ -183,25 +187,78 @@ public class OBSParkRedRight extends LinearOpMode {
                 .lineToY(forward1LineToY) //57
                 .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
-                .lineToY(backLineToY) //57
-                .lineToY(forward1LineToY)
+                .lineToY(backLineToY)
+                .lineToY(backLineTo2Y)
+                .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
+                .turn(Math.toRadians(turn1Angle))
+               /* .lineToY(forward1LineToY)
                 .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
                 .lineToY(backLineToY) //57
+                */
+
                 .build();
 
         Actions.runBlocking(
                 new SequentialAction(
                         step2Action
-                        //  new SleepAction(1),
-                        // elbow.upEobow(),
-                        //  elevator.elevatorDown(0),
-                        // new SleepAction(1),
-                        // intake.closeIntake()
-
                 )
         );
 
+        Action step3Action = drive.actionBuilder(drive.pose)
+                .lineToY(lineTo5Y)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        elevator.elevatorDown(elevatorDown1Pos),
+                        new SleepAction(1),
+                        elbow.straightEobow(),
+                        intake.openIntake(),
+                        step2Action,
+                        intake.closeIntake(),
+                        new SleepAction(0.5),
+                        elevator.elevatorDown(elevatorUpPos)
+
+         ));
+
+        Action step4Action = drive.actionBuilder(drive.pose)
+                .lineToY(lineTo6Y)
+                .turn(Math.toRadians(turn2Angle))
+                .strafeTo(new Vector2d(10, -50))
+                .lineToY(lineToY)
+                .build();
+
+        Actions.runBlocking(
+            new SequentialAction(
+                elbow.downElbow(),
+                new SleepAction(0.5),
+                intake.openIntake()
+        ));
+
+        Action step5Action = drive.actionBuilder(drive.pose)
+            .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
+            .build();
+
+        Actions.runBlocking(
+            new SequentialAction(
+                    elevator.elevatorDown(elevatorDown1Pos),
+                    new SleepAction(1),
+                    step5Action
+        ));
+
+        /*Action step6Action = drive.actionBuilder(drive.pose)
+                .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        elevator.elevatorDown(elevatorDown1Pos),
+                        new SleepAction(1),
+                        step5Action,
+                        elbow.straightEobow(),
+                        intake.openIntake()
+                ));*/
 
         telemetry.addLine("end autonomous ");
         telemetry.update();

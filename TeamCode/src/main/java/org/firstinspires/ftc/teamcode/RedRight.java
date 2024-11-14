@@ -33,7 +33,7 @@ public class RedRight extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        DistanceSensor distance = new DistanceSensor(hardwareMap);
+        //DistanceSensor distance = new DistanceSensor(hardwareMap);
 
         while (!isStopRequested() && !opModeIsActive()) {
             // int position = visionOutputPosition;

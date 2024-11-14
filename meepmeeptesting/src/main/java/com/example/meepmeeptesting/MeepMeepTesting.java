@@ -61,7 +61,12 @@ public class MeepMeepTesting {
                 .lineToX(50)
                 .turn(Math.toRadians(-90))
                 .lineToY(-55) */
-                .lineToY(-31.5)
+               /* .lineToY(-31.5)
+                .strafeTo(new Vector2d(55,-31.5))
+                .setTangent(Math.toRadians(90) - 1e-6)
+                .lineToY(-50)
+                .build());*/
+                .lineToY(-33.5)
                 .strafeTo(new Vector2d(55,-31.5))
                 .setTangent(Math.toRadians(90) - 1e-6)
                 .lineToY(-50)

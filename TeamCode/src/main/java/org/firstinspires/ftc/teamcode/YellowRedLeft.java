@@ -45,9 +45,9 @@ public class YellowRedLeft extends LinearOpMode {
 
     public static double step8LineToY = -24;
 
-    public static int step9Angle = 113;
+    public static int step9Angle = 130;
 
-    public static double step10LineToY = -38;
+    public static double step10LineToY = -37;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -55,7 +55,7 @@ public class YellowRedLeft extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        DistanceSensor distance = new DistanceSensor(hardwareMap);
+        //DistanceSensor distance = new DistanceSensor(hardwareMap);
 
 
 
@@ -225,7 +225,9 @@ public class YellowRedLeft extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         step10Action,
-                        intake.openIntake()
+                        intake.openIntake(),
+                        new SleepAction(0.25),
+                        elbow.elbowTop()
                 )
         );
 

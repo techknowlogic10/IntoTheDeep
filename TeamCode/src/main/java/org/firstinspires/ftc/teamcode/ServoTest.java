@@ -22,14 +22,20 @@ public class ServoTest extends OpMode {
   //  public static double intake_sr_end = 1;
     public static double intake_initial_pos = 0.4;
 
-    public static double elbow_start = 0.475; // 0.1; tiny claw//down
+    /*
+    public static double elbow_start = 0.48; // 0.1; tiny claw//down //0.475
     public static double elbow_end = 0.34; //up
+    public static double elbow_initial_pos = 0.42;
+    public static double elbow_middle = 0.42; */
+
+    public static double elbow_start = 0.31; // 0.1; tiny claw//down //0.475
+    public static double elbow_end = 0.7; //up //auto 0.88
+    public static double elbow_initial_pos = 0.49;
+    public static double elbow_middle = 0.49;
 
    // public static double elbow_sr_start = 0;
    // public static double elbow_sr_end = 1;
-    public static double elbow_initial_pos = 0.42;
 
-    public static double elbow_middle = 0.42;
 
 
 
@@ -38,10 +44,11 @@ public class ServoTest extends OpMode {
 
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-       elbow.setDirection(Servo.Direction.REVERSE);
+       // elbow.setDirection(Servo.Direction.REVERSE);
 
         // elbow.setPosition(1);
-       elbow.scaleRange(0.2,0.6);
+       //elbow.scaleRange(0.2,0.6);
+        elbow.scaleRange(0.15,0.28);
         elbow.setPosition(elbow_initial_pos);
 
         //intake = hardwareMap.servo.get("intake");

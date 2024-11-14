@@ -55,7 +55,7 @@ public class YellowBlueLeft extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        DistanceSensor distance = new DistanceSensor(hardwareMap);
+        //DistanceSensor distance = new DistanceSensor(hardwareMap);
 
         while (!isStopRequested() && !opModeIsActive()) {
             telemetry.addLine("!isStopRequested() && !opModeIsActive()");
@@ -128,7 +128,7 @@ public class YellowBlueLeft extends LinearOpMode {
 
         // Step 5: Move back to basket ( Point A? ) and drop in high basket
         Action step5Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step5LineToY, 0)
+                .lineToYLinearHeading(step5LineToY, 45)
                 .waitSeconds(0.5)
                 .build();
 
@@ -136,10 +136,10 @@ public class YellowBlueLeft extends LinearOpMode {
                 step5Action,
                 intake.openIntake()
         ));
-/*
-        // Step 6: Move back to "Point D" Elevator down
+
+        //Step 6: Move back to "Point D" Elevator down
         Action step6Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step6LineToY, 180)
+                .lineToYLinearHeading(step6LineToY, 45)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
@@ -185,13 +185,13 @@ public class YellowBlueLeft extends LinearOpMode {
 
         // Step 10: Go to "Point " and drop in high basket
         Action step10Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step10LineToY, 180)
+                .lineToYLinearHeading(step10LineToY, 45)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
                 step10Action,
                 intake.openIntake()
-        )); */
+        ));
 
         telemetry.addLine("end autonomous ");
         telemetry.update();

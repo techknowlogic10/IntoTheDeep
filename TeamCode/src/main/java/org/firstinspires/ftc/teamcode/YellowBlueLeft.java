@@ -41,13 +41,13 @@ public class YellowBlueLeft extends LinearOpMode {
     public static double step5LineToY = 38;
 
     public static double step6LineToY = 30;
-    public static int step7Angle = -108;
+    public static int step7Angle = -95;
 
-    public static double step8LineToY = 24;
+    public static double step8LineToY = 25;
 
     public static int step9Angle = 110;
 
-    public static double step10LineToY = 38;
+    public static double step10LineToY = 37;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -96,7 +96,8 @@ public class YellowBlueLeft extends LinearOpMode {
 
         Actions.runBlocking(new SequentialAction(
                 step2Action,
-                elevator.elevatorDown(elevatorDownPos)
+                elevator.elevatorDown(elevatorDownPos),
+                new SleepAction(0.5)
         ));
 
         // Step 3: Strafe To "Point C", turn 45 Elbow down, Close Intake and Elevator Up
@@ -128,7 +129,8 @@ public class YellowBlueLeft extends LinearOpMode {
 
         // Step 5: Move back to basket ( Point A? ) and drop in high basket
         Action step5Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step5LineToY, 45)
+                //.lineToYLinearHeading(step5LineToY, 45)
+                .lineToY(step5LineToY)
                 .waitSeconds(0.5)
                 .build();
 
@@ -138,8 +140,9 @@ public class YellowBlueLeft extends LinearOpMode {
         ));
 
         //Step 6: Move back to "Point D" Elevator down
-        Action step6Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step6LineToY, 45)
+       Action step6Action = drive.actionBuilder(drive.pose)
+                //.lineToYLinearHeading(step6LineToY, 45)
+                .lineToY(step6LineToY)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
@@ -168,8 +171,8 @@ public class YellowBlueLeft extends LinearOpMode {
                 new SleepAction(0.5),
                 intake.closeIntake(),
                 new SleepAction(0.5),
-                elbow.upElbow()
-               // new SleepAction(0.5)
+                elbow.upElbow(),
+                new SleepAction(0.25)
         ));
 
         // Step 9: Turn 110 deg and Elevator Up
@@ -184,8 +187,9 @@ public class YellowBlueLeft extends LinearOpMode {
         ));
 
         // Step 10: Go to "Point " and drop in high basket
-        Action step10Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step10LineToY, 45)
+       Action step10Action = drive.actionBuilder(drive.pose)
+                //.lineToYLinearHeading(step10LineToY, 45)
+                .lineToY(step10LineToY)
                 .build();
 
         Actions.runBlocking(new SequentialAction(

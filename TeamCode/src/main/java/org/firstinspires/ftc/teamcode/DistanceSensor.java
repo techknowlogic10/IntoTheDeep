@@ -12,8 +12,8 @@ public class DistanceSensor {
 
     public DistanceSensor (HardwareMap hardwareMap) {
 
-        sensorDistance = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, "distancesensor");
-        sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
+       // sensorDistance = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, "distancesensor");
+      //  sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
         /*telemetry.addLine("distancesensor");
         telemetry.update();*/
     }

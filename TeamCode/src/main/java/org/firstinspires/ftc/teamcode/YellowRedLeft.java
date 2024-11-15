@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
@@ -86,7 +87,7 @@ public class YellowRedLeft extends LinearOpMode {
                 new SequentialAction(
                         elbow.upElbow(),
                         elevator.elevatorUp(elevatorTopPos),
-                       // elevator.ElevatorHighBasketUp(elevatorTopPos),
+                        // elevator.ElevatorHighBasketUp(elevatorTopPos),
                         new SleepAction(3),
                         step1Action,
                         new SleepAction(0.5),
@@ -115,8 +116,9 @@ public class YellowRedLeft extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                 step2Action,
-                        elevator.elevatorDown(elevatorDownPos)
+                        step2Action,
+                        elevator.elevatorDown(elevatorDownPos),
+                        new SleepAction(0.5)
                 )
         );
 
@@ -319,7 +321,7 @@ public class YellowRedLeft extends LinearOpMode {
                         elbow.upEobow()*/
 
              /*   )
-        );
+        );*/
         /*
 
         Action backAction = drive.actionBuilder(drive.pose)

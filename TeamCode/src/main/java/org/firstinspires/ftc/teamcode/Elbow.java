@@ -39,7 +39,7 @@ public class Elbow {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             //elbow.setPosition(0.48); //0.475
-            elbow.setPosition(0.31); //0.475
+            elbow.setPosition(0.28); //0.475 , 0.31
             return false;
         }
     }

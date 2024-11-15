@@ -67,8 +67,10 @@ public class DriverOperator extends OpMode {
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //slider.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        lift = hardwareMap.dcMotor.get("lift");
+       /* lift = hardwareMap.dcMotor.get("lift");
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        */
         //lift.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
@@ -162,7 +164,7 @@ public class DriverOperator extends OpMode {
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
             //elbow.setPosition(0.48); //elbow down/ elbow_start //0.475
-            elbow.setPosition(0.31); //elbow down/ elbow_start //0.475
+            elbow.setPosition(0.29); //elbow down/ elbow_start //0.475
         }else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
            // elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
@@ -191,9 +193,9 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("elevatorPower: "+ elevatorPower);
         elevator.setPower(elevatorPower);
 
-        double liftPower = gamepad1.right_stick_y * 2;
+       /* double liftPower = gamepad1.right_stick_y * 2;
         telemetry.addLine("liftPower: "+ liftPower);
-        lift.setPower(liftPower);
+        lift.setPower(liftPower);*/
 
        /* if (gamepad2.a){
             telemetry.addLine("gamepad2.a: ");
@@ -214,7 +216,7 @@ public class DriverOperator extends OpMode {
 
         }*/
 
-        if (gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0){
+       /* if (gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0){
             telemetry.addLine("gamepad1.left_trigger  && gamepad2.right_trigger >0");
             while(lift.isBusy()){
                 lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -222,7 +224,7 @@ public class DriverOperator extends OpMode {
         } else if (gamepad1.dpad_right){
             telemetry.addLine("open the lock");
 
-        }
+        } */
 
         telemetry.update();
 

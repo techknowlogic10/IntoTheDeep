@@ -25,7 +25,7 @@ public class OBSParkRedRight extends LinearOpMode {
 
     public static double strafe2ToX = 60;
     public static double strafe3ToX = 70;
-    public static double strafe4ToX = 75;
+    public static double strafe4ToX = 78;
 
     //public static double strafeToY = 33.5;
     public static double backLineToY = -50;
@@ -188,9 +188,9 @@ public class OBSParkRedRight extends LinearOpMode {
                 .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
                 .lineToY(backLineToY)
-               /* .lineToY(backLineTo2Y)
+                .lineToY(backLineTo2Y)
                 .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
-                .turn(Math.toRadians(turn1Angle)) */
+                .turn(Math.toRadians(turn1Angle))
                 .lineToY(forward1LineToY)
                 .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))

@@ -26,7 +26,7 @@ public class OBSParkBlueRight extends LinearOpMode {
 
     public static double strafe2ToX = -60;
     public static double strafe3ToX = -70;
-    public static double strafe4ToX = -80;
+    public static double strafe4ToX = -78;
 
     public static double strafeToY = 33.5;
     public static double backLineToY = 50;

@@ -67,11 +67,9 @@ public class DriverOperator extends OpMode {
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //slider.setDirection(DcMotorSimple.Direction.REVERSE);
 
-       /* lift = hardwareMap.dcMotor.get("lift");
+        lift = hardwareMap.dcMotor.get("lift");
+       // lift.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        */
-        //lift.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -79,8 +77,9 @@ public class DriverOperator extends OpMode {
         //elbow.setDirection(Servo.Direction.REVERSE);
         /*elbow.scaleRange(0.2,0.6);
         elbow.setPosition(0.34); //elbow up tiny*/
-        elbow.scaleRange(0.15,0.28);
-        elbow.setPosition(0.88);
+        //elbow.scaleRange(0.15,0.28);
+        elbow.scaleRange(0.005,0.072);
+        elbow.setPosition(1);
 
         //  elbow.setPosition(0.48); //elbow up
 
@@ -159,16 +158,16 @@ public class DriverOperator extends OpMode {
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
            // elbow.setPosition(0.34); // elbow up/ elbow_end
-            elbow.setPosition(0.7); // elbow up/ elbow_end
+            elbow.setPosition(0.67); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
             //elbow.setPosition(0.48); //elbow down/ elbow_start //0.475
-            elbow.setPosition(0.29); //elbow down/ elbow_start //0.475
+            elbow.setPosition(0); //elbow down/ elbow_start //0.475, 0.29
         }else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
            // elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
-            elbow.setPosition(0.49); //elbow 90-parallal/ elbow_middle
+            elbow.setPosition(0.35); //elbow 90-parallal/ elbow_middle
         }
 
         if(gamepad2.left_bumper){
@@ -193,20 +192,21 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("elevatorPower: "+ elevatorPower);
         elevator.setPower(elevatorPower);
 
-       /* double liftPower = gamepad1.right_stick_y * 2;
+        double liftPower = gamepad1.right_stick_y * 5;
+        //double liftPower = gamepad1.left_trigger * 2;
         telemetry.addLine("liftPower: "+ liftPower);
-        lift.setPower(liftPower);*/
+        lift.setPower(liftPower);
 
-       /* if (gamepad2.a){
+        /*if (gamepad2.a){
             telemetry.addLine("gamepad2.a: ");
             autoElevator.elevatorUp(375);
 
         }*/
-       /* if (gamepad2.b){
+        if (gamepad2.b){
             telemetry.addLine("gamepad2.b: ");
-
+            elbow.setPosition(1);
         }
-
+/*
         if (gamepad2.y){
             telemetry.addLine("gamepad2.y: ");
 
@@ -216,15 +216,12 @@ public class DriverOperator extends OpMode {
 
         }*/
 
-       /* if (gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0){
+        if (gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0){
             telemetry.addLine("gamepad1.left_trigger  && gamepad2.right_trigger >0");
             while(lift.isBusy()){
                 lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-        } else if (gamepad1.dpad_right){
-            telemetry.addLine("open the lock");
-
-        } */
+        }
 
         telemetry.update();
 

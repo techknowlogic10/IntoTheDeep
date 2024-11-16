@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class OBSParkRedRight extends LinearOpMode {
 
     public static double lineToY = -33.5;
-    public static int elevatorUpPos = 365;
+    public static int elevatorUpPos = 375;
     public static int elevatorDownPos = 250;
    // public static double strafeToX = 40;
     public static double strafeToY = -31.45;
@@ -30,16 +30,18 @@ public class OBSParkRedRight extends LinearOpMode {
     //public static double strafeToY = 33.5;
     public static double backLineToY = -50;
 
-    public static double backLineTo2Y = -45;
+    public static double backLineTo2Y = -43;
     public static int turn1Angle = 180;
 
     public static double strafe5ToX = 60;
     public static double strafe5ToY = -45;
-    public static double lineTo5Y = -55;
-    public static int elevatorDown1Pos = 185;
+    public static double lineTo5Y = -50.5;
+    public static int elevatorDown1Pos = 85;
 
     public static double lineTo6Y = -50;
     public static int turn2Angle = -180;
+
+    public static double lineTo4Y = -36;
 
 
 
@@ -183,39 +185,44 @@ public class OBSParkRedRight extends LinearOpMode {
                 .lineToY(forward1LineToY)
                 .strafeTo(new Vector2d(strafe2ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
-                .lineToY(backLineToY) //57
-                .lineToY(forward1LineToY) //57
+                .lineToY(backLineToY) //first sample push
+                .lineToY(forward1LineToY) //-8
                 .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
-                .lineToY(backLineToY)
-                .lineToY(backLineTo2Y)
-                .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
-                .turn(Math.toRadians(turn1Angle))
-                .lineToY(forward1LineToY)
+                .lineToY(backLineToY) //second sample
+
+
+               // .turn(Math.toRadians(turn1Angle))
+              /*  .lineToY(forward1LineToY)
                 .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
                 .setTangent(Math.toRadians(90))
-                .lineToY(backLineToY) //57
+                .lineToY(backLineToY) //57 //third sample
+               */
 
-
+                // new code for a specimen
+                .lineToY(backLineTo2Y)
+                .turn(Math.toRadians(turn1Angle))
                 .build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                        step2Action
+                        step2Action,
+                        elbow.straightEobow(),
+                        intake.openIntake(),
+                        elevator.elevatorDown(elevatorDown1Pos),
+                        new SleepAction(1)
+
+
                 )
         );
 
-       /* Action step3Action = drive.actionBuilder(drive.pose)
+        Action step3Action = drive.actionBuilder(drive.pose)
                 .lineToY(lineTo5Y)
                 .build();
 
-        Actions.runBlocking(
+       Actions.runBlocking(
                 new SequentialAction(
-                        elevator.elevatorDown(elevatorDown1Pos),
-                        new SleepAction(1),
-                        elbow.straightEobow(),
-                        intake.openIntake(),
-                        step2Action,
+                        step3Action,
                         intake.closeIntake(),
                         new SleepAction(0.5),
                         elevator.elevatorDown(elevatorUpPos)
@@ -226,17 +233,20 @@ public class OBSParkRedRight extends LinearOpMode {
                 .lineToY(lineTo6Y)
                 .turn(Math.toRadians(turn2Angle))
                 .strafeTo(new Vector2d(10, -50))
-                .lineToY(lineToY)
+                .setTangent(Math.toRadians(90))
+                .lineToY(lineTo4Y)
                 .build();
 
         Actions.runBlocking(
             new SequentialAction(
+                step4Action,
+                elevator.elevatorDown(elevatorDownPos),
                 elbow.downElbow(),
                 new SleepAction(0.5),
                 intake.openIntake()
         ));
 
-        Action step5Action = drive.actionBuilder(drive.pose)
+       /* Action step5Action = drive.actionBuilder(drive.pose)
             .strafeTo(new Vector2d(strafe5ToX, strafe5ToY))
             .build();
 

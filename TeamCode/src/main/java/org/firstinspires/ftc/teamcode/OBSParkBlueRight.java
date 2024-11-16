@@ -22,7 +22,7 @@ public class OBSParkBlueRight extends LinearOpMode {
     public static int elevatorUpPos = 375;//365
     public static int elevatorDownPos = 230; //250
     public static double strafeToX = -46;
-    public static double forward1LineToY = 8;
+    public static double forward1LineToY = 7;
 
     public static double strafe2ToX = -60;
     public static double strafe3ToX = -70;
@@ -30,6 +30,15 @@ public class OBSParkBlueRight extends LinearOpMode {
 
     public static double strafeToY = 33.5;
     public static double backLineToY = 50;
+
+    public static double backLineTo2Y = 43;
+    public static int turn1Angle = 180;
+
+    public static int elevatorDown1Pos = 85;
+    public static double lineTo5Y = 49.5;
+    public static double lineTo6Y = 49;
+    public static int turn2Angle = -180;
+    public static double lineTo4Y = 35.5;
 
     /*public static double spinetToX= 35;
     public static double spinetToY = -50;
@@ -177,33 +186,58 @@ public class OBSParkBlueRight extends LinearOpMode {
                 .lineToY(forward1LineToY) //57
                 .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
                 .setTangent(Math.toRadians(-90))
-                .lineToY(backLineToY) //57
-                .lineToY(forward1LineToY)
+                .lineToY(backLineToY) //second sample push
+                /*.lineToY(forward1LineToY)
                 .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
                 .setTangent(Math.toRadians(-90))
-                .lineToY(backLineToY) //57
-                // .waitSeconds(0.5)
-              //  .lineToY(backLineToY)
+                .lineToY(backLineToY)
+                 */
 
-                /* .turn(Math.toRadians(-120))
-                 .waitSeconds(1)
-                 .turn(Math.toRadians(120))
-                 .waitSeconds(1)*/
-            /*    .lineToY(backLineToY)
-                //.splineTo(new Vector2d(spinetToX, spinetToY),spinetToTangent) */
+                .lineToY(backLineTo2Y)
+                .turn(Math.toRadians(turn1Angle))
+
                 .build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                        step2Action
-                        //  new SleepAction(1),
-                        // elbow.upEobow(),
-                        //  elevator.elevatorDown(0),
-                        // new SleepAction(1),
-                        // intake.closeIntake()
-
+                        step2Action,
+                        elbow.straightEobow(),
+                        intake.openIntake(),
+                        elevator.elevatorDown(elevatorDown1Pos),
+                        new SleepAction(1)
                 )
         );
+
+        Action step3Action = drive.actionBuilder(drive.pose)
+                .lineToY(lineTo5Y)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        step3Action,
+                        intake.closeIntake(),
+                        new SleepAction(0.5),
+                        elevator.elevatorDown(elevatorUpPos)
+
+                ));
+
+        Action step4Action = drive.actionBuilder(drive.pose)
+                .lineToY(lineTo6Y)
+                .turn(Math.toRadians(turn2Angle))
+                .strafeTo(new Vector2d(-10, 50))
+                .setTangent(Math.toRadians(-90))
+                .lineToY(lineTo4Y)
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        step4Action,
+                        elevator.elevatorDown(elevatorDownPos),
+                        elbow.downElbow(),
+                        new SleepAction(0.5),
+                        intake.openIntake()
+        ));
+
 
 
         telemetry.addLine("end autonomous ");

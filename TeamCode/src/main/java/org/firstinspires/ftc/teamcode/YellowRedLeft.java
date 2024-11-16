@@ -109,14 +109,14 @@ public class YellowRedLeft extends LinearOpMode {
                 )
         ));*/
 
-        Action step2Action = drive.actionBuilder(drive.pose)
+       /* Action step2Action = drive.actionBuilder(drive.pose)
                 .lineToX(lineTo1X)
                 //.lineToX(lineTo2X)
-                .build();
+                .build();*/
 
         Actions.runBlocking(
                 new SequentialAction(
-                        step2Action,
+                       // step2Action,
                         elevator.elevatorDown(elevatorDownPos),
                         new SleepAction(0.5)
                 )
@@ -133,7 +133,7 @@ public class YellowRedLeft extends LinearOpMode {
                 new SequentialAction(
                         ste3Action,
                         elbow.downElbow(),
-                        new SleepAction(0.5),
+                        new SleepAction(1),
                         intake.closeIntake(),
                         new SleepAction(0.5),
                         elbow.upElbow()
@@ -200,7 +200,7 @@ public class YellowRedLeft extends LinearOpMode {
                         step8Action,
                         new SleepAction(0.5),
                         elbow.downElbow(),
-                        new SleepAction(0.5),
+                        new SleepAction(1),
                         intake.closeIntake(),
                         new SleepAction(0.5),
                         elbow.upElbow(),

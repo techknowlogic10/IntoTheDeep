@@ -33,21 +33,21 @@ public class YellowBlueLeft extends LinearOpMode {
 
     //step2
     public static double step3StrafeX = 55;
-    public static double step3StrafeY = 21;
-    public static int step3Angle = -45;
+    public static double step3StrafeY = 20;
+    public static int step3Angle = -40;
 
     //step4
     public static int step4Angle = 90;
-    public static double step5LineToY = 38;
+    public static double step5LineToY = 36;
 
     public static double step6LineToY = 30;
     public static int step7Angle = -95;
 
-    public static double step8LineToY = 25;
+    public static double step8LineToY = 23;
 
-    public static int step9Angle = 110;
+    public static int step9Angle = 105;
 
-    public static double step10LineToY = 37;
+    public static double step10LineToY = 35;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -90,12 +90,12 @@ public class YellowBlueLeft extends LinearOpMode {
         ));
 
         // Step 2: Move back to Point"B" and ElevatorDown
-       Action step2Action = drive.actionBuilder(drive.pose)
+       /*Action step2Action = drive.actionBuilder(drive.pose)
                 .lineToX(lineTo1X)
-                .build();
+                .build();*/
 
         Actions.runBlocking(new SequentialAction(
-                step2Action,
+               // step2Action,
                 elevator.elevatorDown(elevatorDownPos),
                 new SleepAction(0.5)
         ));
@@ -110,7 +110,7 @@ public class YellowBlueLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 step3Action,
                 elbow.downElbow(),
-                new SleepAction(0.5),
+                new SleepAction(1),
                 intake.closeIntake(),
                 new SleepAction(0.5),
                 elbow.upElbow()
@@ -168,7 +168,7 @@ public class YellowBlueLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 step8Action,
                 elbow.downElbow(),
-                new SleepAction(0.5),
+                new SleepAction(1),
                 intake.closeIntake(),
                 new SleepAction(0.5),
                 elbow.upElbow(),

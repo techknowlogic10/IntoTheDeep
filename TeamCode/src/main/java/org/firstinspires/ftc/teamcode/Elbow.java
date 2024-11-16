@@ -18,8 +18,9 @@ public class Elbow {
        /* elbow.scaleRange(0.2,0.6);
         elbow.setPosition(0.26); //tiny
         */
-        elbow.scaleRange(0.15,0.28);
-        elbow.setPosition(0.88);
+       // elbow.scaleRange(0.15,0.28);
+        elbow.scaleRange(0,0.072);
+        elbow.setPosition(1); //0.88
 
     }
 
@@ -27,7 +28,7 @@ public class Elbow {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             //elbow.setPosition(0.34);
-            elbow.setPosition(0.7);
+            elbow.setPosition(0.67);
             return false;
         }
     }
@@ -39,7 +40,7 @@ public class Elbow {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             //elbow.setPosition(0.48); //0.475
-            elbow.setPosition(0.28); //0.475 , 0.31
+            elbow.setPosition(0); //0.475 , 0.31, 0.28
             return false;
         }
     }
@@ -50,7 +51,7 @@ public class Elbow {
     public class ElbowStraight implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            elbow.setPosition(0.49);
+            elbow.setPosition(0.35); //0.49
             return false;
         }
     }
@@ -62,7 +63,7 @@ public class Elbow {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             //elbow.setPosition(0.34);
-            elbow.setPosition(0.88);
+            elbow.setPosition(1); //0.88
             return false;
         }
     }

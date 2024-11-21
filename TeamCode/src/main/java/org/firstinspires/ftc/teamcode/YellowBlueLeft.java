@@ -1,18 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 
 @Config
 @Autonomous
@@ -28,7 +27,7 @@ public class YellowBlueLeft extends LinearOpMode {
     public static double lineToY1 = -10;
     public static double lineToX1 = -35;
 
-    public static double lineTo1X = 64.5;
+    public static double lineTo1X = 65.5; //64.5;
     public static int elevatorTopPos = 650;
 
     //step2
@@ -49,13 +48,18 @@ public class YellowBlueLeft extends LinearOpMode {
 
     public static double step10LineToY = 35;
 
+    public static double intake_close = 0; //0.85;
+    public static double intake_sample_open = 0.5;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        //DistanceSensor distance = new DistanceSensor(hardwareMap);
+
+        //DcMotor slider = null;
 
         while (!isStopRequested() && !opModeIsActive()) {
             telemetry.addLine("!isStopRequested() && !opModeIsActive()");
@@ -86,16 +90,16 @@ public class YellowBlueLeft extends LinearOpMode {
                 new SleepAction(3),
                 step1Action,
                 new SleepAction(0.5),
-                intake.openIntake()
+                intake.openIntake(intake_sample_open)
         ));
 
         // Step 2: Move back to Point"B" and ElevatorDown
-       /*Action step2Action = drive.actionBuilder(drive.pose)
+       Action step2Action = drive.actionBuilder(drive.pose)
                 .lineToX(lineTo1X)
-                .build();*/
+                .build();
 
         Actions.runBlocking(new SequentialAction(
-               // step2Action,
+                step2Action,
                 elevator.elevatorDown(elevatorDownPos),
                 new SleepAction(0.5)
         ));
@@ -111,7 +115,7 @@ public class YellowBlueLeft extends LinearOpMode {
                 step3Action,
                 elbow.downElbow(),
                 new SleepAction(1),
-                intake.closeIntake(),
+                intake.closeIntake(intake_close),
                 new SleepAction(0.5),
                 elbow.upElbow()
         ));
@@ -131,12 +135,13 @@ public class YellowBlueLeft extends LinearOpMode {
         Action step5Action = drive.actionBuilder(drive.pose)
                 //.lineToYLinearHeading(step5LineToY, 45)
                 .lineToY(step5LineToY)
+
                 .waitSeconds(0.5)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
                 step5Action,
-                intake.openIntake()
+                intake.openIntake(intake_sample_open)
         ));
 
         //Step 6: Move back to "Point D" Elevator down
@@ -169,7 +174,7 @@ public class YellowBlueLeft extends LinearOpMode {
                 step8Action,
                 elbow.downElbow(),
                 new SleepAction(1),
-                intake.closeIntake(),
+                intake.closeIntake(intake_close),
                 new SleepAction(0.5),
                 elbow.upElbow(),
                 new SleepAction(0.25)
@@ -194,7 +199,7 @@ public class YellowBlueLeft extends LinearOpMode {
 
         Actions.runBlocking(new SequentialAction(
                 step10Action,
-                intake.openIntake()
+                intake.openIntake(intake_sample_open)
         ));
 
         telemetry.addLine("end autonomous ");

@@ -36,13 +36,15 @@ public class OBSParkRedRight extends LinearOpMode {
     public static double strafe5ToX = 60;
     public static double strafe5ToY = -45;
     public static double lineTo5Y = -50.5;
-    public static int elevatorDown1Pos = 85;
+    public static int elevatorDown1Pos = 65; //85;
 
     public static double lineTo6Y = -50;
     public static int turn2Angle = -180;
 
     public static double lineTo4Y = -36;
 
+    public static double intake_close = 0; //0.85;
+    public static double intake_specimen_open = 0.4; // 0.4; tiny
 
 
     /*public static double spinetToX= 35;
@@ -153,7 +155,7 @@ public class OBSParkRedRight extends LinearOpMode {
                         elevator.elevatorDown(elevatorDownPos),
                         elbow.downElbow(),
                         new SleepAction(0.5),
-                        intake.openIntake()
+                        intake.openIntake(intake_specimen_open)
                         // elbow.upEobow(),
                         //elevator.elevatorDown(0)
 
@@ -208,7 +210,7 @@ public class OBSParkRedRight extends LinearOpMode {
                 new SequentialAction(
                         step2Action,
                         elbow.straightEobow(),
-                        intake.openIntake(),
+                        intake.openIntake(intake_specimen_open),
                         elevator.elevatorDown(elevatorDown1Pos),
                         new SleepAction(1)
 
@@ -223,7 +225,7 @@ public class OBSParkRedRight extends LinearOpMode {
        Actions.runBlocking(
                 new SequentialAction(
                         step3Action,
-                        intake.closeIntake(),
+                        intake.closeIntake(intake_close),
                         new SleepAction(0.5),
                         elevator.elevatorDown(elevatorUpPos)
 
@@ -242,8 +244,8 @@ public class OBSParkRedRight extends LinearOpMode {
                 step4Action,
                 elevator.elevatorDown(elevatorDownPos),
                 elbow.downElbow(),
-                new SleepAction(0.5),
-                intake.openIntake()
+                new SleepAction(1),
+                intake.openIntake(intake_specimen_open)
         ));
 
        /* Action step5Action = drive.actionBuilder(drive.pose)

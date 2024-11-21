@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @Config
@@ -34,11 +35,14 @@ public class OBSParkBlueRight extends LinearOpMode {
     public static double backLineTo2Y = 43;
     public static int turn1Angle = 180;
 
-    public static int elevatorDown1Pos = 85;
+    public static int elevatorDown1Pos = 65; //85;
     public static double lineTo5Y = 49.5;
     public static double lineTo6Y = 49;
     public static int turn2Angle = -180;
     public static double lineTo4Y = 35.5;
+
+    public static double intake_close = 0; //0.85;
+    public static double intake_specimen_open = 0.4; // 0.4; tiny
 
     /*public static double spinetToX= 35;
     public static double spinetToY = -50;
@@ -149,7 +153,7 @@ public class OBSParkBlueRight extends LinearOpMode {
                         elevator.elevatorDown(elevatorDownPos),
                         elbow.downElbow(),
                         new SleepAction(0.5),
-                        intake.openIntake()
+                        intake.openIntake(intake_specimen_open)
                         // elbow.upEobow(),
                         //elevator.elevatorDown(0)
 
@@ -202,7 +206,7 @@ public class OBSParkBlueRight extends LinearOpMode {
                 new SequentialAction(
                         step2Action,
                         elbow.straightEobow(),
-                        intake.openIntake(),
+                        intake.openIntake(intake_specimen_open),
                         elevator.elevatorDown(elevatorDown1Pos),
                         new SleepAction(1)
                 )
@@ -215,7 +219,7 @@ public class OBSParkBlueRight extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         step3Action,
-                        intake.closeIntake(),
+                        intake.closeIntake(intake_close),
                         new SleepAction(0.5),
                         elevator.elevatorDown(elevatorUpPos)
 
@@ -235,7 +239,7 @@ public class OBSParkBlueRight extends LinearOpMode {
                         elevator.elevatorDown(elevatorDownPos),
                         elbow.downElbow(),
                         new SleepAction(0.5),
-                        intake.openIntake()
+                        intake.openIntake(intake_specimen_open)
         ));
 
 

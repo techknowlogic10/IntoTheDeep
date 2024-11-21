@@ -4,12 +4,11 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
@@ -50,13 +49,15 @@ public class YellowRedLeft extends LinearOpMode {
 
     public static double step10LineToY = -37;
 
+    public static double intake_close = 0; //0.85;
+    public static double intake_sample_open = 0.5;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        //DistanceSensor distance = new DistanceSensor(hardwareMap);
 
 
 
@@ -90,35 +91,24 @@ public class YellowRedLeft extends LinearOpMode {
                         // elevator.ElevatorHighBasketUp(elevatorTopPos),
                         new SleepAction(3),
                         step1Action,
-                        new SleepAction(0.5),
-                        intake.openIntake()
+                        new SleepAction(0.25),
+                        intake.openIntake(intake_sample_open)
 
                 )
         );
 
-       /* Actions.runBlocking(new SequentialAction(
-                elbow.upElbow(),
-                new ParallelAction(
-                        elevator.elevatorUp(elevatorTopPos),
-                        new SequentialAction(
-                                new SleepAction(1),
-                                step1Action,
-                                new SleepAction(0.5),
-                                intake.openIntake()
-                        )
-                )
-        ));*/
 
-       /* Action step2Action = drive.actionBuilder(drive.pose)
+
+        Action step2Action = drive.actionBuilder(drive.pose)
                 .lineToX(lineTo1X)
                 //.lineToX(lineTo2X)
-                .build();*/
+                .build();
 
         Actions.runBlocking(
                 new SequentialAction(
-                       // step2Action,
+                        step2Action,
                         elevator.elevatorDown(elevatorDownPos),
-                        new SleepAction(0.5)
+                        new SleepAction(0.25)
                 )
         );
 
@@ -134,7 +124,7 @@ public class YellowRedLeft extends LinearOpMode {
                         ste3Action,
                         elbow.downElbow(),
                         new SleepAction(1),
-                        intake.closeIntake(),
+                        intake.closeIntake(intake_close),
                         new SleepAction(0.5),
                         elbow.upElbow()
 
@@ -156,19 +146,21 @@ public class YellowRedLeft extends LinearOpMode {
         );
 
         Action step5Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step5LineToY,180)
-                .waitSeconds(0.5)
+                //.lineToYLinearHeading(step5LineToY,180)
+                .lineToY(step5LineToY)
+                .waitSeconds(0.25)
                 .build();
 
         Actions.runBlocking(
                 new SequentialAction(
                         step5Action,
-                        intake.openIntake()
+                        intake.openIntake(intake_sample_open)
                 )
         );
 
         Action step6Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step6LineToY,180)
+                //.lineToYLinearHeading(step6LineToY,180)
+                .lineToY(step6LineToY)
                 .build();
 
         Actions.runBlocking(
@@ -201,7 +193,7 @@ public class YellowRedLeft extends LinearOpMode {
                         new SleepAction(0.5),
                         elbow.downElbow(),
                         new SleepAction(1),
-                        intake.closeIntake(),
+                        intake.closeIntake(intake_close),
                         new SleepAction(0.5),
                         elbow.upElbow(),
                         new SleepAction(0.5)
@@ -221,13 +213,14 @@ public class YellowRedLeft extends LinearOpMode {
         );
 
         Action step10Action = drive.actionBuilder(drive.pose)
-                .lineToYLinearHeading(step10LineToY,180)
+                //.lineToYLinearHeading(step10LineToY,180)
+                .lineToY(step10LineToY)
                 .build();
 
         Actions.runBlocking(
                 new SequentialAction(
                         step10Action,
-                        intake.openIntake(),
+                        intake.openIntake(intake_sample_open),
                         new SleepAction(0.25),
                         elbow.elbowTop()
                 )

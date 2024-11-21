@@ -37,6 +37,11 @@ public class DriverOperator extends OpMode {
 
    private double drivePower = 1.5;
 
+    public static double intake_close = 0; //0.85;
+    public static double intake_specimen_open = 0.4; // 0.4; tiny
+    public static double intake_sample_open = 0.5;
+    public static double intake_wide_open = 1;
+
 
     @Override
     public void init(){
@@ -78,15 +83,20 @@ public class DriverOperator extends OpMode {
         /*elbow.scaleRange(0.2,0.6);
         elbow.setPosition(0.34); //elbow up tiny*/
         //elbow.scaleRange(0.15,0.28);
-        elbow.scaleRange(0.005,0.072);
+        //elbow.scaleRange(0.005,0.072);
+        elbow.scaleRange(0,0.1);
         elbow.setPosition(1);
 
         //  elbow.setPosition(0.48); //elbow up
 
         intake = hardwareMap.get(Servo.class, "intake");
         intake.setDirection(Servo.Direction.REVERSE);
-        intake.scaleRange(0,1);
-        intake.setPosition(0.4); //intake open tiny
+        //intake.scaleRange(0,1);
+        //intake.setPosition(0.85);// inatek close
+        intake.scaleRange(0,0.06);
+        intake.setPosition(intake_close);// inatek close
+        //intake.setPosition(0.4); //intake open tiny
+
        // intake.setPosition(0.52); //intake open
 
 
@@ -158,30 +168,34 @@ public class DriverOperator extends OpMode {
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
            // elbow.setPosition(0.34); // elbow up/ elbow_end
-            elbow.setPosition(0.67); // elbow up/ elbow_end
+            elbow.setPosition(0.7); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
             //elbow.setPosition(0.48); //elbow down/ elbow_start //0.475
-            elbow.setPosition(0); //elbow down/ elbow_start //0.475, 0.29
-        }else if(gamepad2.dpad_left){
+            elbow.setPosition(0.16); //elbow down/ elbow_start //0.475, 0.29
+        } else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
            // elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
-            elbow.setPosition(0.35); //elbow 90-parallal/ elbow_middle
+            elbow.setPosition(0.4); //elbow 90-parallal/ elbow_middle
+        } else if(gamepad2.x){
+            telemetry.addLine("gamepad2.y lower 0:");
+            elbow.setPosition(1); //elbow top
         }
 
         if(gamepad2.left_bumper){
-            telemetry.addLine("gamepad2.right_bumper 0.8");
-            intake.setPosition(0.85); //intake open  //0.8-1021
-        }
-        else if(gamepad2.right_bumper){
-            telemetry.addLine("gamepad2.left_bumper 0.37");
-           // intake.setPosition(0.4); //intake close // tiny
-            intake.setPosition(0.52); //intake close
+            telemetry.addLine("gamepad2.right_bumper intake_close:"+intake_close);
+            intake.setPosition(intake_close); //intake close
+        } else if(gamepad2.right_bumper){
+            telemetry.addLine("gamepad2.left_bumper intake_specimen_open:" +intake_specimen_open);
+            intake.setPosition(intake_specimen_open); //intake specimen open
+        } else  if(gamepad2.y){
+            telemetry.addLine("gamepad2.right_bumper intake_sample_open:"+intake_sample_open);
+            intake.setPosition(intake_sample_open); //intake sample open
         }
         else if(gamepad2.dpad_right){
-            telemetry.addLine("gamepad2.dpad_right");
-            intake.setPosition(0.2); //intake wide open
+            telemetry.addLine("gamepad2.dpad_right intake_wide_open:"+intake_wide_open);
+            intake.setPosition(intake_wide_open); //intake wide open
         }
 
         double sliderPower = gamepad2.left_stick_y * 1.5;
@@ -202,15 +216,12 @@ public class DriverOperator extends OpMode {
             autoElevator.elevatorUp(375);
 
         }*/
-        if (gamepad2.b){
+       /* if (gamepad2.b){
             telemetry.addLine("gamepad2.b: ");
             elbow.setPosition(1);
-        }
+        }*/
 /*
-        if (gamepad2.y){
-            telemetry.addLine("gamepad2.y: ");
 
-        }
         if (gamepad2.x){
             telemetry.addLine("gamepad2.x: ");
 

@@ -30,6 +30,9 @@ public class BlueRight extends LinearOpMode {
     public static double spinetToY = -50;
     public static double spinetToTangent = -25;*/
 
+    public static double intake_close = 0; //0.85;
+    public static double intake_specimen_open = 0.4; // 0.4; tiny
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -135,7 +138,7 @@ public class BlueRight extends LinearOpMode {
                        elevator.elevatorDown(elevatorDownPos),
                        elbow.downElbow(),
                        new SleepAction(0.5),
-                       intake.openIntake()
+                       intake.openIntake(intake_specimen_open)
                         // elbow.upEobow(),
                         //elevator.elevatorDown(0)
 

@@ -30,6 +30,9 @@ public class Elevator {
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         elevatorEx = hardwareMap.get(DcMotorEx.class, "elevator");
+
+        DcMotor slider = hardwareMap.dcMotor.get("slider");
+        slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public class ElevatorUp implements Action {

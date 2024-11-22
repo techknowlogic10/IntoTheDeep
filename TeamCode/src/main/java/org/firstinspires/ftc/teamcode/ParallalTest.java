@@ -59,11 +59,11 @@ public class ParallalTest extends LinearOpMode {
                 .build();
 
         Actions.runBlocking(new SequentialAction(
-                parallelAction,
-                new ParallelAction(
 
-                        elevator.elevatorUp(elevatorTopPos)
-                        // .waitSeconds(3)
+                new ParallelAction(
+                        parallelAction,
+                        elevator.elevatorUp(elevatorTopPos),
+                        new SleepAction(3)
                 )
         ));
 

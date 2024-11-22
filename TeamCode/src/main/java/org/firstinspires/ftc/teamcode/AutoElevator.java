@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoElevator {
 
@@ -14,25 +18,46 @@ public class AutoElevator {
 
     private DcMotor elevator;
     private DcMotorEx elevatorEx;
+    Telemetry telemetry = null;
 
-    public AutoElevator(DcMotor elevator, DcMotorEx elevatorEx) {
+
+    public AutoElevator(DcMotor elevator, DcMotorEx elevatorEx, Telemetry telemetry) {
         this.elevator =  elevator;
         this.elevatorEx = elevatorEx;
+        this.telemetry = telemetry;
     }
 
     public void elevatorUp(int elevatorUpPos){
+
+        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
         elevatorUpPos = (int)(elevatorUpPos * COUNTS_PER_MM);
 
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addLine("AutoElevator after RUN_USING_ENCODER");
 
         double TPS; // Ticks per second
         TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV;
-        elevatorEx.setVelocity(TPS);
+       // elevatorEx.setVelocity(TPS);
         elevatorEx.setTargetPosition(elevatorUpPos);
         elevatorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       // elevator.setPower(1);
+
         elevatorEx.setVelocity(TPS);
+
+        //while(elevator.isBusy()){
+            sleep(2000);
+       // }
+        telemetry.addLine("AutoElevator end");
+    }
+
+    private final void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 

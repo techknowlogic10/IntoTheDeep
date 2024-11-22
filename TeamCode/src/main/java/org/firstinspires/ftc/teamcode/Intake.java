@@ -10,13 +10,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Intake {
 
 private Servo intake = null;
+public static double intake_close = 0; //0.85;
+public static double intake_sample_open = 0.5;
+
 
 public Intake(HardwareMap hardwareMap) {
     intake = hardwareMap.get(Servo.class, "intake");
     intake.setDirection(Servo.Direction.REVERSE);
     //intake.setPosition(0.85);
     intake.scaleRange(0,0.06);
-    intake.setPosition(1);
+    intake.setPosition(intake_close);
 }
 
 public class CloseIntake implements Action {
@@ -27,7 +30,7 @@ public class CloseIntake implements Action {
 
     @Override
     public boolean run(@NonNull TelemetryPacket packet) {
-        intake.setPosition(0.85); //tiny
+        intake.setPosition(intake_close); //tiny
         // intake.setPosition(0.52);
         return false;
     }
@@ -43,7 +46,7 @@ public class OpenIntake implements Action {
     }
     @Override
     public boolean run(@NonNull TelemetryPacket packet) {
-        intake.setPosition(0.52);
+        intake.setPosition(intake_sample_open);
         return false;
     }
 }

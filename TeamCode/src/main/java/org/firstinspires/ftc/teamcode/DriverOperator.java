@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.motors.RevRoboticsCoreHexMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 //@Disabled
 @TeleOp
+@Config
 
 public class DriverOperator extends OpMode {
 
@@ -22,7 +24,9 @@ public class DriverOperator extends OpMode {
    private DcMotor elevator = null;
    private DcMotor slider = null;
    private DcMotor lift = null;
-   //private AutoElevator autoElevator = null;
+   private AutoElevator autoElevator = null;
+    public static int elevatorSpecimenPickPos = 100;
+    public static int elevatorSpecimenHookPos = 102;//202;
 
 
 
@@ -121,9 +125,9 @@ public class DriverOperator extends OpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-       // autoElevator = new AutoElevator(elevator, encoderElevator);
+        autoElevator = new AutoElevator(elevator, encoderElevator,telemetry);
 
     }
     @Override
@@ -211,15 +215,33 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("liftPower: "+ liftPower);
         lift.setPower(liftPower);
 
-        /*if (gamepad2.a){
+        if (gamepad2.a){
             telemetry.addLine("gamepad2.a: ");
-            autoElevator.elevatorUp(375);
+            elbow.setPosition(0.4);
+            intake.setPosition(intake_specimen_open);
 
-        }*/
-       /* if (gamepad2.b){
+            autoElevator.elevatorUp(elevatorSpecimenPickPos);
+            //new Thread(2000);
+            elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevator.setDirection(DcMotorSimple.Direction.FORWARD);
+            //elbow.setPosition(1);//elbow 90-parallal/ elbow_middle
+        }
+        if (gamepad2.b){
+
             telemetry.addLine("gamepad2.b: ");
-            elbow.setPosition(1);
-        }*/
+            intake.setPosition(intake_close);
+            autoElevator.elevatorUp(elevatorSpecimenHookPos);
+            //new Thread(2000);
+            elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevator.setDirection(DcMotorSimple.Direction.FORWARD);
+
+            elbow.setPosition(1); //elbow 90-parallal/ elbow_middle
+
+        }
+
+
+        elevator.setDirection(DcMotorSimple.Direction.FORWARD);
+
 /*
 
         if (gamepad2.x){

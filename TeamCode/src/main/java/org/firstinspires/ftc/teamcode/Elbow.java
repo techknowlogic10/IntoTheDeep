@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Elbow {
 
     private Servo elbow = null;
-    public static double elbow_down = 0.16; // 0.1; tiny claw//down //0.475
-    public static double elbow_up = 0.7; //up //auto 0.88
+    public static double elbow_down = 0.16;
+    public static double elbow_up = 0.7;
     public static double elbow_middle = 0.4;
     public static double elbow_lower = 0;
     public static double elbow_top = 1;
@@ -19,21 +19,13 @@ public class Elbow {
     public Elbow(HardwareMap hardwareMap) {
 
         elbow = hardwareMap.get(Servo.class, "elbow");
-       // elbow.setDirection(Servo.Direction.REVERSE);
-       /* elbow.scaleRange(0.2,0.6);
-        elbow.setPosition(0.26); //tiny
-        */
-       // elbow.scaleRange(0.15,0.28);
-        //elbow.scaleRange(0,0.072);
         elbow.scaleRange(0,0.1);
-        elbow.setPosition(elbow_top); //0.88
-
+        elbow.setPosition(elbow_top);
     }
 
     public class ElbowUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            //elbow.setPosition(0.34);
             elbow.setPosition(elbow_up);
             return false;
         }
@@ -45,8 +37,7 @@ public class Elbow {
     public class DownElbow implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            //elbow.setPosition(0.48); //0.475
-            elbow.setPosition(elbow_down); //0.475 , 0.31, 0.28
+            elbow.setPosition(elbow_down);
             return false;
         }
     }
@@ -68,8 +59,7 @@ public class Elbow {
     public class ElbowTop implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            //elbow.setPosition(0.34);
-            elbow.setPosition(elbow_top); //0.88
+            elbow.setPosition(elbow_top);
             return false;
         }
     }

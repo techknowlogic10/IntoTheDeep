@@ -46,6 +46,12 @@ public class DriverOperator extends OpMode {
     public static double intake_sample_open = 0.5;
     public static double intake_wide_open = 1;
 
+    public static double elbow_down = 0.16; // 0.1; tiny claw//down //0.475
+    public static double elbow_up = 0.7; //up //auto 0.88
+    public static double elbow_middle = 0.4;
+    public static double elbow_lower = 0;
+    public static double elbow_top = 1;
+
 
     @Override
     public void init(){
@@ -89,7 +95,7 @@ public class DriverOperator extends OpMode {
         //elbow.scaleRange(0.15,0.28);
         //elbow.scaleRange(0.005,0.072);
         elbow.scaleRange(0,0.1);
-        elbow.setPosition(1);
+        elbow.setPosition(elbow_top);
 
         //  elbow.setPosition(0.48); //elbow up
 
@@ -172,19 +178,19 @@ public class DriverOperator extends OpMode {
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
            // elbow.setPosition(0.34); // elbow up/ elbow_end
-            elbow.setPosition(0.7); // elbow up/ elbow_end
+            elbow.setPosition(elbow_up); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
             //elbow.setPosition(0.1); //elbow up //tiney elbow
             //elbow.setPosition(0.48); //elbow down/ elbow_start //0.475
-            elbow.setPosition(0.16); //elbow down/ elbow_start //0.475, 0.29
+            elbow.setPosition(elbow_down); //elbow down/ elbow_start //0.475, 0.29
         } else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
            // elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
-            elbow.setPosition(0.4); //elbow 90-parallal/ elbow_middle
+            elbow.setPosition(elbow_middle); //elbow 90-parallal/ elbow_middle
         } else if(gamepad2.x){
-            telemetry.addLine("gamepad2.y lower 0:");
-            elbow.setPosition(1); //elbow top
+            telemetry.addLine("gamepad2.x top 0:");
+            elbow.setPosition(elbow_top); //elbow top
         }
 
         if(gamepad2.left_bumper){

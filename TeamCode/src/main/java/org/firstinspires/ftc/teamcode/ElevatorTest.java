@@ -74,8 +74,6 @@ public class ElevatorTest extends OpMode {
 
             System.out.println("before pos: "+elevator.getCurrentPosition());
 
-
-
             elevator.setTargetPosition(elevator_down);
             elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             elevator.setPower(-1.0);

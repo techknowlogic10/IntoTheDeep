@@ -31,8 +31,7 @@ public class Elevator {
 
         elevatorEx = hardwareMap.get(DcMotorEx.class, "elevator");
 
-        DcMotor slider = hardwareMap.dcMotor.get("slider");
-        slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public class ElevatorUp implements Action {
@@ -54,7 +53,12 @@ public class Elevator {
             elevator.setPower(1); */
 
             double TPS; // Ticks per second
-            TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV;
+            TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV * 3;
+            //TPS: 2467.1499999999996
+            //uppos: 1182
+            System.out.println("Elevator TPS: "+TPS);
+            System.out.println("Elevator uppos: "+uppos);
+
             elevatorEx.setVelocity(TPS);
             elevatorEx.setTargetPosition(uppos);
             elevatorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -91,7 +95,7 @@ public class Elevator {
             elevator.setPower(-1.0); */
 
             double TPS; // Ticks per second
-            TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV;
+            TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV * 3;
             elevatorEx.setVelocity(TPS);
             elevatorEx.setTargetPosition(downpos);
             elevatorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);

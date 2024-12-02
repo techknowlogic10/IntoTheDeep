@@ -24,7 +24,8 @@ public class Elbow {
         elbow.setPosition(0.26); //tiny
         */
        // elbow.scaleRange(0.15,0.28);
-        elbow.scaleRange(0,0.072);
+        //elbow.scaleRange(0,0.072);
+        elbow.scaleRange(0,0.1);
         elbow.setPosition(elbow_top); //0.88
 
     }

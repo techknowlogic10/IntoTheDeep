@@ -1,52 +1,53 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @Config
 @Autonomous
 public class OBSParkBlueRight extends LinearOpMode {
 
-    public static double lineToY = 34;
-    /* public static int elevatorUpPos = 330;
-     public static int elevatorDownPos = 260; */
-    public static int elevatorUpPos = 375;//365
-    public static int elevatorDownPos = 230; //250
-    public static double strafeToX = -46;
-    public static double forward1LineToY = 7;
+    public static int elevatorTopPos = 202;
+    public static int elevatorDownPos = 0;
+    public static int elevatorSpecimenPickPos = 100;
+    public static int elevatorSpecimenHookPos = 102;//202;
+    public static int sliderForwardPos= 200;// 330;
+    public static int sliderBackwardPos= 0;
 
-    public static double strafe2ToX = -60;
-    public static double strafe3ToX = -70;
-    public static double strafe4ToX = -78;
+    //first specimen
+    public static double firstSampleForwardToChamber = 35;//-33.5;
 
-    public static double strafeToY = 33.5;
-    public static double backLineToY = 50;
+    //second specimen
+    public static double secondSpecimenStrafeToX = -43;
+    public static int secondSpecimenforward1LineToY = 8;
+    public static double secondSpecimenStrafe2ToX = -60;
+    public static double secondSpecimenBackLineToY = 55;
 
-    public static double backLineTo2Y = 43;
-    public static int turn1Angle = 180;
+    //third specimen
+    public static double thirdSpecimenStrafeToX = -70;
 
-    public static int elevatorDown1Pos = 65; //85;
-    public static double lineTo5Y = 49.5;
-    public static double lineTo6Y = 49;
-    public static int turn2Angle = -180;
-    public static double lineTo4Y = 35.5;
+    //fourth specimen
+    public static double fourthSpecimenStrafeToX = -78;
+
+    //second specimen hooking
+    public static double secondSpecimenGrabBackLineToY = 50;
+    public static int turnAngle = 180;
+    public static int turn1RghtAngle = -90;
+    public static int turn2RghtAngle = -90;
+    public static double secondSpecimenGrabLineToY = 60;
+    public static double secondSpecimenHookLineToX = -10;
+
+    //third specimen hook
+    public static double thirdSpecimenHookStrafeToX = -50;
 
     public static double intake_close = 0; //0.85;
-    public static double intake_specimen_open = 0.4; // 0.4; tiny
-
-    /*public static double spinetToX= 35;
-    public static double spinetToY = -50;
-    public static double spinetToTangent = -25;*/
+    public static double intake_specimen_open = 0.4; ;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -54,8 +55,8 @@ public class OBSParkBlueRight extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-       // DistanceSensor distance = new DistanceSensor(hardwareMap);
-
+        Slider slider = new Slider(hardwareMap);
+        //DistanceSensor distance = new DistanceSensor(hardwareMap);
 
         while (!isStopRequested() && !opModeIsActive()) {
             // int position = visionOutputPosition;
@@ -74,174 +75,106 @@ public class OBSParkBlueRight extends LinearOpMode {
             return;
         }
 
-        Pose2d initialPose = new Pose2d(-10, 55, Math.toRadians(-90));
+        //Pose2d initialPose = new Pose2d(10, -55, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-7, 64, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Actions.runBlocking(
                 new SequentialAction(
-                        elbow.straightEobow(),
-                        new SleepAction(0.5)
-                )
-        );
+                        drive.actionBuilder(initialPose)
+                                // first loaded sample
+                                // .stopAndAdd(elbow.elbowTop())
+                                .stopAndAdd(elevator.elevatorUp(elevatorTopPos))
+                                .lineToY(firstSampleForwardToChamber)
+                                //.waitSeconds(0.25)
 
-        // TrajectoryActionBuilder step1 = drive.actionBuilder(initialPose)
-        Action step1Action = drive.actionBuilder(drive.pose)
-                .lineToY(lineToY)
-                .build();
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(1.5)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                //.waitSeconds(1)
+                                .stopAndAdd(elbow.elbowTop())
 
-      /*  Action trajectoryActionCloseOut = tab1.fresh()
-                 .build();*/
+                                //dragg the second specimen
+                                .strafeTo(new Vector2d(secondSpecimenStrafeToX, firstSampleForwardToChamber))
+                                .setTangent(Math.toRadians(90))
+                                .lineToY(secondSpecimenforward1LineToY)
+                                .strafeTo(new Vector2d(secondSpecimenStrafe2ToX, secondSpecimenforward1LineToY))
+                                .setTangent(Math.toRadians(90))
+                                .lineToY(secondSpecimenBackLineToY) //first sample push
 
-        /* Action waitAction = drive.actionBuilder(new Pose2d(-10, -33, Math.toRadians(90)))
-                .waitSeconds(2).build();
+                                //drag third sapecimen
+                                /* .strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
+                                 .setTangent(Math.toRadians(90))
+                                 .lineToY(secondSpecimenBackLineToY) */
 
-        */
-        /*Action waitAction = drive.actionBuilder(drive.pose)
-                .waitSeconds(2).build();*/
+                                //grab a specimen and hook
+                                .lineToY(secondSpecimenGrabBackLineToY)
+                                .turn(Math.toRadians(turnAngle))
+                                .stopAndAdd(elbow.straightEobow())
+                                .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
+                                .waitSeconds(0.25)
+                                .lineToY(secondSpecimenGrabLineToY)
+                                .stopAndAdd(intake.closeIntake(intake_close))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
+                                .stopAndAdd(elbow.elbowTop())
+                                .lineToY(secondSpecimenGrabBackLineToY)
+                                .turn(Math.toRadians(turn1RghtAngle))
+                                .waitSeconds(0.25)
+                                .lineToX(secondSpecimenHookLineToX)
+                                .turn(Math.toRadians(turn2RghtAngle))
+                                .lineToY(firstSampleForwardToChamber)
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(1.5)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                //.waitSeconds(1)
+                                .stopAndAdd(elbow.elbowTop())
 
-       /* Action backAction = drive.actionBuilder(new Pose2d(-30, -55, Math.toRadians(90)))
-                .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(30, 12),0).build();
-               // .lineToY(-51).build();
-       */
 
-        telemetry.addLine("2. trajectoryActionChosen");
-        telemetry.update();
+                                //hook third specimen
+                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, firstSampleForwardToChamber))
+                                .setTangent(Math.toRadians(90))
+                                .lineToY(secondSpecimenGrabLineToY)
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                .stopAndAdd(elbow.straightEobow())
+                                .turn(Math.toRadians(turnAngle))
+                                .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(intake.closeIntake(intake_close))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
+                                .stopAndAdd(elbow.elbowTop())
+                                .lineToY(secondSpecimenGrabBackLineToY)
+                                .turn(Math.toRadians(turn1RghtAngle))
+                                .waitSeconds(0.25)
+                                .lineToX(secondSpecimenHookLineToX)
+                                .turn(Math.toRadians(turn2RghtAngle))
+                                .lineToY(firstSampleForwardToChamber)
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                //.waitSeconds(1)
+                                .stopAndAdd(elbow.elbowTop())
 
-        Actions.runBlocking(
-                new SequentialAction(
-                        elevator.elevatorUp(elevatorUpPos),
-                        new SleepAction(0.5),
-                        step1Action
-                )
-        );
 
-        //double chamberDistance =  distance.getDistance();
+                                //drag fourth sapecimen
+                                /* .strafeTo(new Vector2d(fourthSpecimenStrafeToX, secondSpecimenforward1LineToY))
+                                 .setTangent(Math.toRadians(90))
+                                 .lineToY(secondSpecimenBackLineToY)
 
-        /*Action lenthAdjustmentAction = null;
+                                 */
 
-        if(chamberDistance < 8 ) {
-            lineToY =lineToY - 1;
-
-            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
-                    .lineToY(lineToY)
-                    .build();
-
-                    Actions.runBlocking(
-                            new SequentialAction(
-                            )
-                    );
-
-        } else  if(chamberDistance > 9 ) {
-            lineToY =lineToY - 1;
-            lenthAdjustmentAction = drive.actionBuilder(drive.pose)
-                    .lineToY(lineToY)
-                    .build();
-
-                    Actions.runBlocking(
-                            new SequentialAction(
-                            )
-                    );
-
-        }*/
-
-       /* telemetry.addLine("chamberDistance: "+chamberDistance);
-        telemetry.update();*/
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        elevator.elevatorDown(elevatorDownPos),
-                        elbow.downElbow(),
-                        new SleepAction(0.5),
-                        intake.openIntake(intake_specimen_open)
-                        // elbow.upEobow(),
-                        //elevator.elevatorDown(0)
-
-                       /* new ParallelAction(
-                             elevator.elevatorDown(0)
-                        )*/
-                       /* elevator.elevatorDown(0),
-                        elbow.downElbow(),
-                        intake.closeIntake(),
-                        elbow.upEobow()*/
-
-                )
-        );
-        /*
-
-        Action backAction = drive.actionBuilder(drive.pose)
-                .lineToY(lineToY - 1)
-                .build();
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        backAction
-                )
-        );
-*/
-        Action step2Action = drive.actionBuilder(drive.pose)
-                //.strafeTo(new Vector2d(strafeToX, lineToY))
-                .strafeTo(new Vector2d(strafeToX, lineToY))
-                .setTangent(Math.toRadians(-90))
-                .lineToY(forward1LineToY)
-                .strafeTo(new Vector2d(strafe2ToX, forward1LineToY))
-                .setTangent(Math.toRadians(-90))
-                .lineToY(backLineToY) //57
-                .lineToY(forward1LineToY) //57
-                .strafeTo(new Vector2d(strafe3ToX, forward1LineToY))
-                .setTangent(Math.toRadians(-90))
-                .lineToY(backLineToY) //second sample push
-                /*.lineToY(forward1LineToY)
-                .strafeTo(new Vector2d(strafe4ToX, forward1LineToY))
-                .setTangent(Math.toRadians(-90))
-                .lineToY(backLineToY)
-                 */
-
-                .lineToY(backLineTo2Y)
-                .turn(Math.toRadians(turn1Angle))
-
-                .build();
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        step2Action,
-                        elbow.straightEobow(),
-                        intake.openIntake(intake_specimen_open),
-                        elevator.elevatorDown(elevatorDown1Pos),
-                        new SleepAction(1)
-                )
-        );
-
-        Action step3Action = drive.actionBuilder(drive.pose)
-                .lineToY(lineTo5Y)
-                .build();
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        step3Action,
-                        intake.closeIntake(intake_close),
-                        new SleepAction(0.5),
-                        elevator.elevatorDown(elevatorUpPos)
-
+                                .build()
                 ));
-
-        Action step4Action = drive.actionBuilder(drive.pose)
-                .lineToY(lineTo6Y)
-                .turn(Math.toRadians(turn2Angle))
-                .strafeTo(new Vector2d(-10, 50))
-                .setTangent(Math.toRadians(-90))
-                .lineToY(lineTo4Y)
-                .build();
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        step4Action,
-                        elevator.elevatorDown(elevatorDownPos),
-                        elbow.downElbow(),
-                        new SleepAction(0.5),
-                        intake.openIntake(intake_specimen_open)
-        ));
-
 
 
         telemetry.addLine("end autonomous ");

@@ -10,8 +10,6 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 
 @Config
 @Autonomous
@@ -21,32 +19,34 @@ public class YellowSampleBlueLeft extends LinearOpMode {
     public static int elevatorDownPos = 0;
 
     //first sample
-    public static double firstSampleForwardToBasket = 56.5;
+    public static double firstSampleForwardToBasket = 54.5;
 
     //second sample
     public static double secondSampleStrafeX = 38;
-    public static double secondSampleStrafeY = 28;
-    public static int secondSampleRightTurnAngle = 50;
-    public static int secondSampleLeftTurnAngle = 106;
-    public static double secondSampleLineToYForward = 23.5;
+    public static double secondSampleStrafeY = 30;
+    public static int secondSampleRightTurnAngle = -55;
+    public static int secondSampleLeftTurnAngle = 103;
+    public static double secondSampleLineToYForward = 26.5;
     public static double secondSampleForwardToBasket = 49;
 
 
     //third sample
-    public static double thirdSampleBackwardY = 30;
-    public static int thirdSampleRightTurnAngle = -103;
-    public static double thirdSampleForwardY = 23.5;
-    public static int thirdSampleLeftTurnAngle = 118;
+    public static double thirdSampleBackwardY = 35;
+    public static int thirdSampleRightTurnAngle = -106;
+    public static double thirdSampleForwardY = -8;
+    public static int thirdSampleLeftTurnAngle = 119;
     public static double thirdSampleForwardToBasket = 48;
 
     //fourth sample
-    public static double fourthSampleBackwardY = 35;
+   /* public static double fourthSampleBackwardY = 35;
     public static int fourthSampleRightTurnAngle = -80;
     public static double fourthSampleStrafeX = 60;
     public static double fourthSampleStrafeY = 10;
     public static double fourthSampleBackToX = 55;
     public static int fourthSampleLeftTurnAngle = 45;
     public static double fourthSampleForwardToBasket = 48;
+
+    */
 
     public static double intake_close = 0; //0.85;
     public static double intake_sample_open = 0.5;
@@ -58,7 +58,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        Slider slider = new Slider( hardwareMap);
+        Slider slider = new Slider(hardwareMap);
 
         while (!isStopRequested() && !opModeIsActive()) {
             telemetry.addLine("!isStopRequested() && !opModeIsActive()");
@@ -75,7 +75,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
             return;
         }
 
-        Pose2d initialPose = new Pose2d(38, 64, Math.toRadians(180));
+        Pose2d initialPose = new Pose2d(-38, -64, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Action parallelAction = drive.actionBuilder(initialPose)
@@ -86,7 +86,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
 
                 )
@@ -96,9 +96,9 @@ public class YellowSampleBlueLeft extends LinearOpMode {
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
-                                .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .waitSeconds(0.35)
 
                                 //second sample
                                 .strafeTo(new Vector2d(secondSampleStrafeX, secondSampleStrafeY))
@@ -112,7 +112,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
                                 .waitSeconds(0.5)
                                 .stopAndAdd(elbow.elbowTop())
                                 .turn(Math.toRadians(secondSampleLeftTurnAngle))
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .build()
                 ));
 
@@ -125,7 +125,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
                 )
         ));
@@ -134,12 +134,14 @@ public class YellowSampleBlueLeft extends LinearOpMode {
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
 
-                                //third sample
-                                //.waitSeconds(0.25)
+
+                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
+
+                                //third sample
                                 .lineToY(thirdSampleBackwardY)
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
                                 .waitSeconds(0.25)
@@ -164,7 +166,7 @@ public class YellowSampleBlueLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
                 )
         ));
@@ -172,55 +174,57 @@ public class YellowSampleBlueLeft extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
 
                                 //fourth sample
-                                .lineToY(fourthSampleBackwardY)
-                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
-                                .waitSeconds(0.25)
-                                .turn(Math.toRadians(fourthSampleRightTurnAngle))
-                                .strafeTo(new Vector2d(fourthSampleStrafeX, fourthSampleStrafeY))
-                                .waitSeconds(0.25)
-                                .stopAndAdd(elbow.downElbow())
-                                .waitSeconds(1)
-                                .stopAndAdd(intake.closeIntake(intake_close))
-                                .waitSeconds(0.5)
-                                .lineToX(fourthSampleBackToX)
-                                .stopAndAdd(elbow.elbowTop())
-                                .waitSeconds(0.25)
-                                .turn(Math.toRadians(fourthSampleLeftTurnAngle))
+                                /* .lineToY(fourthSampleBackwardY)
+                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                 .waitSeconds(0.25)
+                                 .turn(Math.toRadians(fourthSampleRightTurnAngle))
+                                 .strafeTo(new Vector2d(fourthSampleStrafeX, fourthSampleStrafeY))
+                                 .waitSeconds(0.25)
+                                 .stopAndAdd(elbow.downElbow())
+                                 .waitSeconds(1)
+                                 .stopAndAdd(intake.closeIntake(intake_close))
+                                 .waitSeconds(0.5)
+                                 .lineToX(fourthSampleBackToX)
+                                 .stopAndAdd(elbow.elbowTop())
+                                 .waitSeconds(0.25)
+                                 .turn(Math.toRadians(fourthSampleLeftTurnAngle))
+
+                                 */
                                 .build()
                 ));
 
-        parallelAction = drive.actionBuilder(drive.pose)
-                .waitSeconds(2)
-                .lineToY(fourthSampleForwardToBasket)
-                .build();
+           /* parallelAction = drive.actionBuilder(drive.pose)
+                    .waitSeconds(2)
+                    .lineToY(fourthSampleForwardToBasket)
+                    .build();
 
-        Actions.runBlocking(new SequentialAction(
-                new ParallelAction(
-                        elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
-                        parallelAction
-                )
-        ));
+            Actions.runBlocking(new SequentialAction(
+                    new ParallelAction(
+                            elevator.elevatorUp(elevatorTopPos),
+                            new SleepAction(0.25),
+                            parallelAction
+                    )
+            ));
 
-        Actions.runBlocking(
-                new SequentialAction(
-                        drive.actionBuilder(drive.pose)
-                                //.waitSeconds(0.25)
-                                .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
-                                .stopAndAdd(intake.openIntake(intake_specimen_open))
-                                .waitSeconds(0.25)
-                                .build()
-                ));
+            Actions.runBlocking(
+                    new SequentialAction(
+                            drive.actionBuilder(drive.pose)
+                                    //.waitSeconds(0.25)
+                                    .stopAndAdd(elbow.upElbow())
+                                    //.waitSeconds(0.25)
+                                    .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                    .waitSeconds(0.25)
+                                    .build()
+                    ));
 
-
+            */
 
         telemetry.addLine("end autonomous ");
         telemetry.update();

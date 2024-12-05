@@ -49,7 +49,7 @@ public class RedRightThree extends LinearOpMode {
     public static double secondSpecimenHookLineToX = 10;
 
     //third specimen hook
-    public static double thirdSpecimenHookStrafeToX = 55;
+    public static double thirdSpecimenHookStrafeToX = 65;
     public static double thirdSpecimenHookLineToX = 12;
 
     public static double intake_close = 0; //0.85;
@@ -79,7 +79,9 @@ public class RedRightThree extends LinearOpMode {
         }
 
         Pose2d initialPose = new Pose2d(4, -64, Math.toRadians(90));
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+        //MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+        MecanumDriveSpeed drive = new MecanumDriveSpeed(hardwareMap, initialPose);
+
 
         Action parallelAction = drive.actionBuilder(initialPose)
                 .lineToY(forwardToChamber)
@@ -162,9 +164,10 @@ public class RedRightThree extends LinearOpMode {
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
                                 .waitSeconds(1)
-                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
-                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.elbowTop())
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                .waitSeconds(0.5)
+
 
                                 //drag third sapecimen
                                 //.strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
@@ -184,7 +187,7 @@ public class RedRightThree extends LinearOpMode {
                                 .lineToY(moveBackToTurnLineToY)
                                 .turn(Math.toRadians(turnAngle))
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
-                                .waitSeconds(0.25)
+                                .waitSeconds(0.5)
                                 .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
                                 .setTangent(Math.toRadians(90))
                                 .lineToY(grabSpecimenLineToY + 5)

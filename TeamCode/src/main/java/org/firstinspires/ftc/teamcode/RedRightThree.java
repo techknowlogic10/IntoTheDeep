@@ -25,14 +25,14 @@ public class RedRightThree extends LinearOpMode {
 
     //first specimen
     public static double forwardSTrafeX = 5;
-    public static double forwardToChamber = -34;// -35;//-33.5;
+    public static double forwardToChamber = -36;// -35;//-33.5;
 
     //second specimen
-    public static double secondSpecimenStrafeToX = 48;
+    public static double secondSpecimenStrafeToX = 45;
     public static int secondSpecimenforward1LineToY = -8;
     public static double secondSpecimenStrafe2ToX = 59;
     public static double secondSpecimenBackLineToY = -55;
-    public static double secondSpecimenFwdToChamber = -34;
+    public static double secondSpecimenFwdToChamber = -35;
 
     //third specimen
     public static double thirdSpecimenStrafeToX = 70;
@@ -163,7 +163,7 @@ public class RedRightThree extends LinearOpMode {
                                 .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
                                 .waitSeconds(1)
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
-                                //.waitSeconds(1)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.elbowTop())
 
                                 //drag third sapecimen
@@ -182,11 +182,12 @@ public class RedRightThree extends LinearOpMode {
 
                                 //hook the third specimen
                                 .lineToY(moveBackToTurnLineToY)
-                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
-                                .setTangent(Math.toRadians(90))
+                                .turn(Math.toRadians(turnAngle))
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
                                 .waitSeconds(0.25)
-                                .turn(Math.toRadians(turnAngle))
+                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
+                                .setTangent(Math.toRadians(90))
+                                .lineToY(grabSpecimenLineToY + 5)
                                 .stopAndAdd(elbow.straightEobow())
                                 .lineToY(grabSpecimenLineToY)
                                 .stopAndAdd(intake.closeIntake(intake_close))

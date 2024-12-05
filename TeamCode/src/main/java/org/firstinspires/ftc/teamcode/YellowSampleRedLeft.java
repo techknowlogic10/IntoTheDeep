@@ -19,22 +19,22 @@ public class YellowSampleRedLeft extends LinearOpMode {
     public static int elevatorDownPos = 0;
 
     //first sample
-    public static double firstSampleForwardToBasket = -56.5;
+    public static double firstSampleForwardToBasket = -54.5;
 
     //second sample
     public static double secondSampleStrafeX = -38;
-    public static double secondSampleStrafeY = -28;
-    public static int secondSampleRightTurnAngle = -50;
-    public static int secondSampleLeftTurnAngle = 106;
-    public static double secondSampleLineToYForward = -23.5;
+    public static double secondSampleStrafeY = -30;
+    public static int secondSampleRightTurnAngle = -55;
+    public static int secondSampleLeftTurnAngle = 103;
+    public static double secondSampleLineToYForward = -26.5;
     public static double secondSampleForwardToBasket = -49;
 
 
     //third sample
-    public static double thirdSampleBackwardY = -30;
-    public static int thirdSampleRightTurnAngle = -103;
-    public static double thirdSampleForwardY = -23.5;
-    public static int thirdSampleLeftTurnAngle = 118;
+    public static double thirdSampleBackwardY = -35;
+    public static int thirdSampleRightTurnAngle = -106;
+    public static double thirdSampleForwardY = -28.5;
+    public static int thirdSampleLeftTurnAngle = 119;
     public static double thirdSampleForwardToBasket = -48;
 
     //fourth sample
@@ -56,7 +56,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
         Elevator elevator = new Elevator(hardwareMap);
         Elbow elbow = new Elbow(hardwareMap);
         Intake intake = new Intake(hardwareMap);
-        Slider slider = new Slider( hardwareMap);
+        Slider slider = new Slider(hardwareMap);
 
         while (!isStopRequested() && !opModeIsActive()) {
             telemetry.addLine("!isStopRequested() && !opModeIsActive()");
@@ -84,7 +84,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
 
                 )
@@ -94,9 +94,9 @@ public class YellowSampleRedLeft extends LinearOpMode {
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
-                                .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .waitSeconds(0.35)
 
                                 //second sample
                                 .strafeTo(new Vector2d(secondSampleStrafeX, secondSampleStrafeY))
@@ -110,7 +110,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
                                 .waitSeconds(0.5)
                                 .stopAndAdd(elbow.elbowTop())
                                 .turn(Math.toRadians(secondSampleLeftTurnAngle))
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .build()
                 ));
 
@@ -123,7 +123,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
                 )
         ));
@@ -133,9 +133,9 @@ public class YellowSampleRedLeft extends LinearOpMode {
                         drive.actionBuilder(drive.pose)
 
 
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
 
@@ -164,7 +164,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(0.25),
+                        new SleepAction(1),
                         parallelAction
                 )
         ));
@@ -172,14 +172,14 @@ public class YellowSampleRedLeft extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.upElbow())
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .waitSeconds(0.25)
 
                                 //fourth sample
-                                .lineToY(fourthSampleBackwardY)
+                               /* .lineToY(fourthSampleBackwardY)
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
                                 .waitSeconds(0.25)
                                 .turn(Math.toRadians(fourthSampleRightTurnAngle))
@@ -193,10 +193,12 @@ public class YellowSampleRedLeft extends LinearOpMode {
                                 .stopAndAdd(elbow.elbowTop())
                                 .waitSeconds(0.25)
                                 .turn(Math.toRadians(fourthSampleLeftTurnAngle))
+
+                                */
                                 .build()
                 ));
 
-            parallelAction = drive.actionBuilder(drive.pose)
+           /* parallelAction = drive.actionBuilder(drive.pose)
                     .waitSeconds(2)
                     .lineToY(fourthSampleForwardToBasket)
                     .build();
@@ -220,7 +222,7 @@ public class YellowSampleRedLeft extends LinearOpMode {
                                     .build()
                     ));
 
-
+            */
 
         telemetry.addLine("end autonomous ");
         telemetry.update();

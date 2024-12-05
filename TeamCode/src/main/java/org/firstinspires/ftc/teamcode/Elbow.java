@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Elbow {
 
     private Servo elbow = null;
-    public static double elbow_down = 0.16;
+    public static double elbow_down = 0.25;//0.16;
     public static double elbow_up = 0.7;
-    public static double elbow_middle = 0.4;
+    public static double elbow_middle = 0.53;
     public static double elbow_lower = 0;
     public static double elbow_top = 1;
 

@@ -28,10 +28,7 @@ public class Slider {
         slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slider.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         sliderEx = hardwareMap.get(DcMotorEx.class, "slider");
-
-
     }
 
     public class SliderForward implements Action {
@@ -51,8 +48,8 @@ public class Slider {
 
             double TPS; // Ticks per second
             TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV * 4;
-            System.out.println("Slider TPS: "+TPS);
-            System.out.println("Slider forwardPos: "+forwardPos);
+           /* System.out.println("Slider TPS: "+TPS);
+            System.out.println("Slider forwardPos: "+forwardPos);*/
             sliderEx.setVelocity(TPS);
             sliderEx.setTargetPosition(forwardPos);
             sliderEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);

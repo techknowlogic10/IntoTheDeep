@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class OBSParkRedRight extends LinearOpMode {
+public class RedRightThree extends LinearOpMode {
 
     public static int elevatorTopPos = 208;// 202;
     public static int elevatorDownPos = 0;
@@ -32,10 +32,10 @@ public class OBSParkRedRight extends LinearOpMode {
     public static int secondSpecimenforward1LineToY = -8;
     public static double secondSpecimenStrafe2ToX = 59;
     public static double secondSpecimenBackLineToY = -55;
-    public static double secondSpecimenFwdToChamber = -36;
+    public static double secondSpecimenFwdToChamber = -34;
 
     //third specimen
-    public static double thirdSpecimenStrafeToX = 75;
+    public static double thirdSpecimenStrafeToX = 70;
 
     //fourth specimen
     public static double fourthSpecimenStrafeToX = 78;
@@ -49,11 +49,8 @@ public class OBSParkRedRight extends LinearOpMode {
     public static double secondSpecimenHookLineToX = 10;
 
     //third specimen hook
-    public static double thirdSpecimenHookStrafeToX = 50;
-
-    //parking
-    public static double parkBackToLineY = -50;
-    public static double parkStrafeToX = 55;
+    public static double thirdSpecimenHookStrafeToX = 55;
+    public static double thirdSpecimenHookLineToX = 12;
 
     public static double intake_close = 0; //0.85;
     public static double intake_specimen_open = 0.4; ;
@@ -81,13 +78,12 @@ public class OBSParkRedRight extends LinearOpMode {
             return;
         }
 
-        Pose2d initialPose = new Pose2d(7, -64, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(4, -64, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-       Action parallelAction = drive.actionBuilder(initialPose)
-               // .lineToY(forwardToChamber)
-                .strafeTo(new Vector2d(forwardSTrafeX, forwardToChamber))
-                .waitSeconds(1)
+        Action parallelAction = drive.actionBuilder(initialPose)
+                .lineToY(forwardToChamber)
+                .waitSeconds(0.25)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
@@ -96,22 +92,21 @@ public class OBSParkRedRight extends LinearOpMode {
                         parallelAction,
                         //new SleepAction(1),
                         slider.sliderForward(sliderForwardPos),
-                       // new SleepAction(1.25)
-                        new SleepAction(1)
+                        // new SleepAction(1.25)
+                        new SleepAction(0.75)
                 )
         ));
 
         Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
-
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
                                 .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
                                 .waitSeconds(1)
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
                                 .stopAndAdd(elbow.elbowTop())
 
-                               //drag the second specimen
+                                //drag the second specimen
                                 .strafeTo(new Vector2d(secondSpecimenStrafeToX, forwardToChamber))
                                 .setTangent(Math.toRadians(90))
                                 .lineToY(secondSpecimenforward1LineToY)
@@ -120,18 +115,18 @@ public class OBSParkRedRight extends LinearOpMode {
                                 .lineToY(secondSpecimenBackLineToY)
 
                                 //drag third sapecimen
-                                .strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
-                                .setTangent(Math.toRadians(90))
-                                .lineToY(secondSpecimenBackLineToY)
+                                /* .strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
+                                 .setTangent(Math.toRadians(90))
+                                 .lineToY(secondSpecimenBackLineToY) */
 
-                            //grab the second specimen to hook
+                                //grab the second specimen and hook
                                 .lineToY(moveBackToTurnLineToY)
                                 .turn(Math.toRadians(turnAngle))
                                 .stopAndAdd(elbow.straightEobow())
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
                                 .waitSeconds(0.25)
                                 .lineToY(grabSpecimenLineToY)
-                               // .waitSeconds(0.25)
+                                // .waitSeconds(0.25)
                                 .stopAndAdd(intake.closeIntake(intake_close))
                                 .waitSeconds(0.75)
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
@@ -145,7 +140,7 @@ public class OBSParkRedRight extends LinearOpMode {
                                 .build()
                 ));
 
-      parallelAction = drive.actionBuilder(drive.pose)
+        parallelAction = drive.actionBuilder(drive.pose)
                 //.waitSeconds(1)
                 .lineToY(secondSpecimenFwdToChamber)
                 .waitSeconds(0.25)
@@ -161,7 +156,7 @@ public class OBSParkRedRight extends LinearOpMode {
                 )
         ));
 
-       Actions.runBlocking(
+        Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
@@ -173,26 +168,27 @@ public class OBSParkRedRight extends LinearOpMode {
 
                                 //drag third sapecimen
                                 //.strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
-                                .lineToY(parkBackToLineY)
-                                .strafeTo(new Vector2d(parkStrafeToX, parkBackToLineY))
+                               /* .lineToY(-39)
+                                .strafeTo(new Vector2d(60, -39))
                                 .setTangent(Math.toRadians(90))
-
-                               /* .lineToY(secondSpecimenforward1LineToY)
+                                .lineToY(secondSpecimenforward1LineToY)
                                 .strafeTo(new Vector2d(thirdSpecimenStrafeToX, secondSpecimenforward1LineToY))
                                 .setTangent(Math.toRadians(90))
-                                .lineToY(secondSpecimenBackLineToY)*/
+                                .lineToY(secondSpecimenBackLineToY)
 
-                                /*
+                                */
+
+
 
                                 //hook the third specimen
-                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, forwardToChamber))
+                                .lineToY(moveBackToTurnLineToY)
+                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
                                 .setTangent(Math.toRadians(90))
-                                .lineToY(grabSpecimenLineToY)
-                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
-                                .stopAndAdd(elbow.straightEobow())
-                                .turn(Math.toRadians(turnAngle))
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
-                                //.waitSeconds(0.25)
+                                .waitSeconds(0.25)
+                                .turn(Math.toRadians(turnAngle))
+                                .stopAndAdd(elbow.straightEobow())
+                                .lineToY(grabSpecimenLineToY)
                                 .stopAndAdd(intake.closeIntake(intake_close))
                                 .waitSeconds(0.75)
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
@@ -200,18 +196,18 @@ public class OBSParkRedRight extends LinearOpMode {
                                 .lineToY(moveBackToTurnLineToY)
                                 .turn(Math.toRadians(turn1RghtAngle))
                                 //.waitSeconds(0.25)
-                                .lineToX(secondSpecimenHookLineToX)
+                                .lineToX(thirdSpecimenHookLineToX)
                                 .turn(Math.toRadians(turn2RghtAngle))
 
-                                 */
+
                                 .build()
                 ));
-/*
+
 
 
         parallelAction = drive.actionBuilder(initialPose)
                 .lineToY(forwardToChamber)
-                .waitSeconds(1)
+                .waitSeconds(0.25)
                 .build();
 
         Actions.runBlocking(new SequentialAction(
@@ -237,11 +233,11 @@ public class OBSParkRedRight extends LinearOpMode {
                                  .setTangent(Math.toRadians(90))
                                  .lineToY(secondSpecimenBackLineToY)
                                  */
-/*
+
                                 .build()
                 ));
 
- */
+
 
 
 

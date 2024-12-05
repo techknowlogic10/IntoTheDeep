@@ -20,54 +20,22 @@ public class ServoTest extends OpMode {
     public static double intake_sample_open = 0.5;
     public static double intake_wide_open = 1;
 
-   // public static double intake_sr_start = 0;
-  //  public static double intake_sr_end = 1;
-    //public static double intake_initial_pos = 0.4;
-
-    /*
-    public static double elbow_start = 0.48; // 0.1; tiny claw//down //0.475
-    public static double elbow_end = 0.34; //up
-    public static double elbow_initial_pos = 0.42;
-    public static double elbow_middle = 0.42; */
-
-  /*  public static double elbow_start = 0.29; // 0.1; tiny claw//down //0.475
-    public static double elbow_end = 0.7; //up //auto 0.88
-    public static double elbow_initial_pos = 0.49;
-    public static double elbow_middle = 0.49;
-
-   */
-
-    public static double elbow_down = 0.16; // 0.1; tiny claw//down //0.475
+    public static double elbow_down = 0.25; // 0.1; tiny claw//down //0.475
     public static double elbow_up = 0.7; //up //auto 0.88
-    public static double elbow_middle = 0.4;
+    public static double elbow_middle = 0.53;
     public static double elbow_lower = 0;
     public static double elbow_top = 1;
 
-
-    // public static double elbow_sr_start = 0;
-   // public static double elbow_sr_end = 1;
     private DcMotor elevator = null;
-
-
 
     @Override
     public void init() {
-
-
         elbow = hardwareMap.get(Servo.class, "elbow");
-       // elbow.setDirection(Servo.Direction.REVERSE);
-
-        // elbow.setPosition(1);
-       //elbow.scaleRange(0.2,0.6);
-        //elbow.scaleRange(0.005,0.072); //.072
         elbow.scaleRange(0,0.1);
         elbow.setPosition(elbow_middle);
 
-        //intake = hardwareMap.servo.get("intake");
         intake = hardwareMap.get(Servo.class, "intake");
         intake.setDirection(Servo.Direction.REVERSE);
-        //intake.scaleRange(0,1);
-        //intake.scaleRange(0,0.04);
         intake.scaleRange(0,0.06);
         intake.setPosition(intake_close);
 
@@ -115,10 +83,6 @@ public class ServoTest extends OpMode {
         double elevatorPower = gamepad2.right_stick_y;
         telemetry.addLine("elevatorPower: "+ elevatorPower);
         elevator.setPower(elevatorPower);
-
-
-
-
 
         telemetry.update();
 

@@ -25,15 +25,9 @@ public class DriverOperator extends OpMode {
    private DcMotor slider = null;
    private DcMotor lift = null;
    private AutoElevator autoElevator = null;
-    public static int elevatorSpecimenPickPos = 100;
-    public static int elevatorSpecimenHookPos = 102;//202;
+    public static int elevatorSpecimenPickPos = 116;//100;
+    public static int elevatorSpecimenHookPos = 92;//202;
 
-
-
-  /*  private DcMotorEx encoderFrontLeft = null;
-    private DcMotorEx encoderFrontRight = null;
-    private DcMotorEx encoderBackLeft = null;
-    private DcMotorEx encoderBackRight = null;*/
    private DcMotorEx encoderElevator = null;
 
    private Servo elbow = null;
@@ -42,13 +36,13 @@ public class DriverOperator extends OpMode {
    private double drivePower = 1.5;
 
     public static double intake_close = 0; //0.85;
-    public static double intake_specimen_open = 0.4; // 0.4; tiny
+    public static double intake_specimen_open = 0.4;
     public static double intake_sample_open = 0.5;
     public static double intake_wide_open = 1;
 
-    public static double elbow_down = 0.16; // 0.1; tiny claw//down //0.475
-    public static double elbow_up = 0.7; //up //auto 0.88
-    public static double elbow_middle = 0.4;
+    public static double elbow_down = 0.25;
+    public static double elbow_up = 0.7;
+    public static double elbow_middle = 0.53;
     public static double elbow_lower = 0;
     public static double elbow_top = 1;
 
@@ -87,51 +81,22 @@ public class DriverOperator extends OpMode {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-
         elbow = hardwareMap.get(Servo.class, "elbow");
-        //elbow.setDirection(Servo.Direction.REVERSE);
-        /*elbow.scaleRange(0.2,0.6);
-        elbow.setPosition(0.34); //elbow up tiny*/
-        //elbow.scaleRange(0.15,0.28);
-        //elbow.scaleRange(0.005,0.072);
         elbow.scaleRange(0,0.1);
         elbow.setPosition(elbow_top);
 
-        //  elbow.setPosition(0.48); //elbow up
-
         intake = hardwareMap.get(Servo.class, "intake");
         intake.setDirection(Servo.Direction.REVERSE);
-        //intake.scaleRange(0,1);
-        //intake.setPosition(0.85);// inatek close
         intake.scaleRange(0,0.06);
-        intake.setPosition(intake_close);// inatek close
-        //intake.setPosition(0.4); //intake open tiny
-
-       // intake.setPosition(0.52); //intake open
-
-
-       /* encoderFrontLeft = hardwareMap.get(DcMotorEx.class, "frontleft");
-        encoderFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        encoderFrontRight = hardwareMap.get(DcMotorEx.class, "frontright");
-        encoderFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        encoderBackLeft = hardwareMap.get(DcMotorEx.class, "backleft");
-        encoderBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        encoderBackRight = hardwareMap.get(DcMotorEx.class, "backright");
-        encoderBackRight.setDirection(DcMotorSimple.Direction.REVERSE);*/
+        intake.setPosition(intake_close);
 
         encoderElevator = hardwareMap.get(DcMotorEx.class, "elevator");
         encoderElevator.setDirection(DcMotorSimple.Direction.FORWARD);
-
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         autoElevator = new AutoElevator(elevator, encoderElevator,telemetry);
 
@@ -144,8 +109,6 @@ public class DriverOperator extends OpMode {
         double x = gamepad1.left_stick_x * 1.1; // * 5.1;
         double rx = gamepad1.right_stick_x;
 
-
-
         telemetry.addLine("y: "+ y +" , x: "+ x + " , rx: +"+ rx);
 
         // Normalizing the Power
@@ -157,36 +120,23 @@ public class DriverOperator extends OpMode {
 
         telemetry.addLine("denominator: "+ denominator +" , frontLeftPower: "+ frontLeftPower + " , backLeftPower: +"+ backLeftPower +", frontRightPower: "+frontRightPower +" , backRightPower: "+backRightPower);
 
-
-
-
         //Setting the Power for the DC Motors
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
 
-
-       /* telemetry.addLine("encoderFrontLeft: "+ encoderFrontLeft.getCurrentPosition());
-        telemetry.addLine("encoderFrontRight: "+ encoderFrontRight.getCurrentPosition());
-        telemetry.addLine("encoderBackLeft: "+ encoderBackLeft.getCurrentPosition());
-        telemetry.addLine("encoderBackRight: "+ encoderBackRight.getCurrentPosition());*/
-
         telemetry.addLine("elevator encoder: "+ elevator.getCurrentPosition());
         telemetry.addLine("encoderElevator encoder: "+ encoderElevator.getCurrentPosition());
 
         if(gamepad2.dpad_up) {
             telemetry.addLine("gamepad2.dpad_up 0.32");
-           // elbow.setPosition(0.34); // elbow up/ elbow_end
             elbow.setPosition(elbow_up); // elbow up/ elbow_end
         } else if(gamepad2.dpad_down){
             telemetry.addLine("gamepad2.dpad_down 0");
-            //elbow.setPosition(0.1); //elbow up //tiney elbow
-            //elbow.setPosition(0.48); //elbow down/ elbow_start //0.475
             elbow.setPosition(elbow_down); //elbow down/ elbow_start //0.475, 0.29
         } else if(gamepad2.dpad_left){
             telemetry.addLine("gamepad2.dpad_left 0.3");
-           // elbow.setPosition(0.42); //elbow 90-parallal/ elbow_middle
             elbow.setPosition(elbow_middle); //elbow 90-parallal/ elbow_middle
         } else if(gamepad2.x){
             telemetry.addLine("gamepad2.x top 0:");
@@ -216,21 +166,30 @@ public class DriverOperator extends OpMode {
         telemetry.addLine("elevatorPower: "+ elevatorPower);
         elevator.setPower(elevatorPower);
 
-        double liftPower = gamepad1.right_stick_y * 5;
-        //double liftPower = gamepad1.left_trigger * 2;
-        telemetry.addLine("liftPower: "+ liftPower);
-        lift.setPower(liftPower);
+        //double liftPower = gamepad1.right_stick_y * 5;
+
+        if (gamepad1.left_trigger > 0 ) {
+            double liftPower = gamepad1.left_trigger * 5;
+            //double liftPower = gamepad1.left_trigger * 2;
+            telemetry.addLine("liftPower: " + liftPower);
+            lift.setPower(liftPower);
+        }
+        if (gamepad1.right_trigger > 0 ) {
+            double liftPower = gamepad1.right_trigger * -5;
+            //double liftPower = gamepad1.left_trigger * 2;
+            telemetry.addLine("liftPower: " + liftPower);
+            lift.setPower(liftPower);
+        }
 
         if (gamepad2.a){
             telemetry.addLine("gamepad2.a: ");
-            elbow.setPosition(0.4);
-            intake.setPosition(intake_specimen_open);
 
+            intake.setPosition(intake_specimen_open);
+            elbow.setPosition(elbow_middle);
             autoElevator.elevatorUp(elevatorSpecimenPickPos);
             //new Thread(2000);
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setDirection(DcMotorSimple.Direction.FORWARD);
-            //elbow.setPosition(1);//elbow 90-parallal/ elbow_middle
         }
         if (gamepad2.b){
 
@@ -241,8 +200,14 @@ public class DriverOperator extends OpMode {
             elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevator.setDirection(DcMotorSimple.Direction.FORWARD);
 
-            elbow.setPosition(1); //elbow 90-parallal/ elbow_middle
+            elbow.setPosition(elbow_top); //elbow 90-parallal/ elbow_middle
 
+        }
+
+        if (gamepad1.a){
+            telemetry.addLine("gamepad1.a: smart control for lift");
+            Lift liftSmart = new Lift(lift);
+            liftSmart.liftUp();
         }
 
 

@@ -46,8 +46,8 @@ public class Elevator {
             TPS = ((double) 175 /60) * COUNTS_PER_WHEEL_REV * 3;
             //TPS: 2467.1499999999996
             //uppos: 1182
-            System.out.println("Elevator TPS: "+TPS);
-            System.out.println("Elevator uppos: "+uppos);
+            /*System.out.println("Elevator TPS: "+TPS);
+            System.out.println("Elevator uppos: "+uppos);*/
 
             elevatorEx.setVelocity(TPS);
             elevatorEx.setTargetPosition(uppos);

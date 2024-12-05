@@ -47,7 +47,7 @@ public class AutoElevator {
         elevatorEx.setVelocity(TPS);
 
         //while(elevator.isBusy()){
-            sleep(2000);
+            sleep(1300); //2000
        // }
         telemetry.addLine("AutoElevator end");
     }

@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -64,7 +64,7 @@ public class BalaRedLeft extends LinearOpMode {
         Pose2d initialPose = new Pose2d(-38, -64, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-        Action parallelAction = drive.actionBuilder(initialPose)
+        Action moveToBasketAction = drive.actionBuilder(initialPose)
                 .waitSeconds(3)
                 .lineToX(firstSampleForwardToBasket)
                 .build();
@@ -73,8 +73,7 @@ public class BalaRedLeft extends LinearOpMode {
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
                         new SleepAction(2),
-                        parallelAction
-
+                        moveToBasketAction
                 )
         ));
 
@@ -100,7 +99,7 @@ public class BalaRedLeft extends LinearOpMode {
                                 .build()
                 ));
 
-        parallelAction = drive.actionBuilder(drive.pose)
+        moveToBasketAction = drive.actionBuilder(drive.pose)
                 .waitSeconds(2)
                 .strafeToLinearHeading(new Vector2d(basketX, basketY), Math.toRadians(225))
                 .build();
@@ -109,48 +108,22 @@ public class BalaRedLeft extends LinearOpMode {
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
                         new SleepAction(1),
-                        parallelAction
+                        moveToBasketAction
                 )
         ));
 
         Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
-                                .waitSeconds(0.25)
                                 .stopAndAdd(elbow.upElbow())
                                 .waitSeconds(0.25)
                                 .stopAndAdd(intake.openIntake(intake_specimen_open))
-                                .waitSeconds(0.25)
+                                .waitSeconds(0.35)
+
+                                //third sample)
                                 .strafeToLinearHeading(new Vector2d(thirdSampleStrafeX, thirdSampleStrafeY), Math.toRadians(90))
-                                .build()
-                ));
-
-        parallelAction = drive.actionBuilder(drive.pose)
-                .waitSeconds(2)
-                .strafeToLinearHeading(new Vector2d(basketX, basketY), Math.toRadians(225))
-                .build();
-
-        Actions.runBlocking(new SequentialAction(
-                new ParallelAction(
-                        //elevator.elevatorUp(elevatorTopPos),
-                        new SleepAction(1),
-                        parallelAction
-                )
-        ));
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        drive.actionBuilder(drive.pose)
-                                .waitSeconds(0.25)
-                                .stopAndAdd(elbow.upElbow())
-                                .waitSeconds(0.25)
-                                .stopAndAdd(intake.openIntake(intake_specimen_open))
-                                .waitSeconds(0.25)
-                                .strafeToLinearHeading(new Vector2d(fourthSampleStrafeX, fourthSampleStrafeY), Math.toRadians(90))
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
-                                .waitSeconds(0.25)
-                                .strafeTo(new Vector2d(fourthSampleStrafeX, fourthSampleStrafeY))
-                                .waitSeconds(0.25)
+                                .waitSeconds(0.5)
                                 .stopAndAdd(elbow.downElbow())
                                 .waitSeconds(1)
                                 .stopAndAdd(intake.closeIntake(intake_close))
@@ -160,7 +133,40 @@ public class BalaRedLeft extends LinearOpMode {
                                 .build()
                 ));
 
-        parallelAction = drive.actionBuilder(drive.pose)
+        moveToBasketAction = drive.actionBuilder(drive.pose)
+                .waitSeconds(2)
+                .strafeToLinearHeading(new Vector2d(basketX, basketY), Math.toRadians(225))
+                .build();
+
+        Actions.runBlocking(new SequentialAction(
+                new ParallelAction(
+                        elevator.elevatorUp(elevatorTopPos),
+                        new SleepAction(1),
+                        moveToBasketAction
+                )
+        ));
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        drive.actionBuilder(drive.pose)
+                                .stopAndAdd(elbow.upElbow())
+                                .waitSeconds(0.25)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .waitSeconds(0.35)
+                                //fourth sample
+                                .strafeToLinearHeading(new Vector2d(fourthSampleStrafeX, fourthSampleStrafeY), Math.toRadians(90))
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                .waitSeconds(0.5)
+                                .stopAndAdd(elbow.downElbow())
+                                .waitSeconds(1)
+                                .stopAndAdd(intake.closeIntake(intake_close))
+                                .waitSeconds(0.5)
+                                .stopAndAdd(elbow.elbowTop())
+                                .waitSeconds(0.25)
+                                .build()
+                ));
+
+        moveToBasketAction = drive.actionBuilder(drive.pose)
                 .waitSeconds(2)
                 .strafeToLinearHeading(new Vector2d(basketX, basketY), Math.toRadians(225))
                 .build();
@@ -169,7 +175,7 @@ public class BalaRedLeft extends LinearOpMode {
                 new ParallelAction(
                         elevator.elevatorUp(elevatorTopPos),
                         new SleepAction(0.25),
-                        parallelAction
+                        moveToBasketAction
                 )
         ));
 

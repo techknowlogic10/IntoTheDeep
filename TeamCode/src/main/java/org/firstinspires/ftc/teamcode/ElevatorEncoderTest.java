@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @Config
-//@Disabled
+@Disabled
 @Autonomous (name = "ElevatorEncoderTest")
 public class ElevatorEncoderTest extends LinearOpMode {
     private DcMotor elevator;

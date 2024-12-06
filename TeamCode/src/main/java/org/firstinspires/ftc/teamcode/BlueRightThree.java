@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Config
 @Autonomous
-public class RedRightThree extends LinearOpMode {
+public class BlueRightThree extends LinearOpMode {
 
     public static int elevatorTopPos = 208;// 202;
     public static int elevatorDownPos = 0;
@@ -25,35 +25,35 @@ public class RedRightThree extends LinearOpMode {
 
     //first specimen
     public static double forwardSTrafeX = 5;
-    public static double forwardToChamber = -37;// -35;//-33.5;
+    public static double forwardToChamber = 37;// -35;//-33.5;
 
     //second specimen
-    public static double secondSpecimenStrafeToX = 45;
-    public static int secondSpecimenforward1LineToY = -8;
-    public static double secondSpecimenStrafe2ToX = 59;
-    public static double secondSpecimenBackLineToY = -55;
+    public static double secondSpecimenStrafeToX = -45;
+    public static int secondSpecimenforward1LineToY = 8;
+    public static double secondSpecimenStrafe2ToX = -59;
+    public static double secondSpecimenBackLineToY = 55;
 
 
     //third specimen
-    public static double thirdSpecimenStrafeToX = 70;
+    public static double thirdSpecimenStrafeToX = -70;
 
     //fourth specimen
-    public static double fourthSpecimenStrafeToX = 78;
+    public static double fourthSpecimenStrafeToX = -78;
 
     //second specimen hooking
-    public static double moveBackToTurnLineToY = -50;
+    public static double moveBackToTurnLineToY = 50;
     public static int turnAngle = 180;
     public static int turn1RghtAngle = -90;
     public static int turn2RghtAngle = -90;
-    public static double grabSpecimenLineToY = -59;
-    public static double secondSpecimenHookLineToX = 15;
-    public static double secondSpecimenFwdToChamber = -31.5;
+    public static double grabSpecimenLineToY = 59;
+    public static double secondSpecimenHookLineToX = -15;
+    public static double secondSpecimenFwdToChamber = 31.5;
 
     //third specimen hook
-    public static double thirdSpecimenGrabLineToY = -58;
-    public static double thirdSpecimenHookStrafeToX = 65;
-    public static double thirdSpecimenHookLineToX = 30;
-    public static double thirdSpecimenFwdToChamber = -36;
+    public static double thirdSpecimenGrabLineToY = 58;
+    public static double thirdSpecimenHookStrafeToX = -65;
+    public static double thirdSpecimenHookLineToX = -30;
+    public static double thirdSpecimenFwdToChamber = 36;
 
     public static double intake_close = 0; //0.85;
     public static double intake_specimen_open = 0.4; ;
@@ -81,7 +81,7 @@ public class RedRightThree extends LinearOpMode {
             return;
         }
 
-        Pose2d initialPose = new Pose2d(4, -64, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-4, 64, Math.toRadians(-90));
         //MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         MecanumDriveSpeed drive = new MecanumDriveSpeed(hardwareMap, initialPose);
 
@@ -170,8 +170,8 @@ public class RedRightThree extends LinearOpMode {
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
                                 .stopAndAdd(elbow.elbowTop())
 
-                               // .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
-                              //  .waitSeconds(0.5)
+                                // .stopAndAdd(elevator.elevatorUp(elevatorSpecimenPickPos))
+                                //  .waitSeconds(0.5)
 
 
 
@@ -215,7 +215,7 @@ public class RedRightThree extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         parallelAction,
-                       // new SleepAction(1),
+                        // new SleepAction(1),
                         slider.sliderForward(sliderForwardPos),
                         new SleepAction(1)
                 )

@@ -25,7 +25,7 @@ public class DriverOperator extends OpMode {
    private DcMotor slider = null;
    private DcMotor lift = null;
    private AutoElevator autoElevator = null;
-    public static int elevatorSpecimenPickPos = 116;//100;
+    public static int elevatorSpecimenPickPos = 112;//116, 100;
     public static int elevatorSpecimenHookPos = 92;//202;
 
    private DcMotorEx encoderElevator = null;
@@ -204,11 +204,11 @@ public class DriverOperator extends OpMode {
 
         }
 
-        if (gamepad1.a){
+        /*if (gamepad1.a){
             telemetry.addLine("gamepad1.a: smart control for lift");
             Lift liftSmart = new Lift(lift);
             liftSmart.liftUp();
-        }
+        }*/
 
 
         elevator.setDirection(DcMotorSimple.Direction.FORWARD);

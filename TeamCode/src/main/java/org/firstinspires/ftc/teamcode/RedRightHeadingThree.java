@@ -9,12 +9,14 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 @Config
+//@Disabled
 @Autonomous
-public class RedRightThree extends LinearOpMode {
+public class RedRightHeadingThree extends LinearOpMode {
 
     public static int elevatorTopPos = 208;// 202;
     public static int elevatorDownPos = 0;
@@ -48,12 +50,18 @@ public class RedRightThree extends LinearOpMode {
     public static double grabSpecimenLineToY = -59;
     public static double secondSpecimenHookLineToX = 15;
     public static double secondSpecimenFwdToChamber = -31.5;
+    public static double secondSpecimenStrafeToChamberX = 15;
+    public static double secondSpecimenStrafeToChamberY = -31.5;
 
     //third specimen hook
     public static double thirdSpecimenGrabLineToY = -58;
     public static double thirdSpecimenHookStrafeToX = 65;
     public static double thirdSpecimenHookLineToX = 30;
     public static double thirdSpecimenFwdToChamber = -36;
+    public static double thirdSpecimenStrafeToFrameX = 65;
+    public static double thirdSpecimenStrafeToFrameY = -55;
+    public static double thirdSpecimenStrafeToChamberX = 30;
+    public static double thirdSpecimenStrafeToChamberY = -36;
 
     public static double intake_close = 0; //0.85;
     public static double intake_specimen_open = 0.4; ;
@@ -132,33 +140,69 @@ public class RedRightThree extends LinearOpMode {
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
                                 .stopAndAdd(elbow.elbowTop())
 
-                                .lineToY(moveBackToTurnLineToY)
+                                .strafeToLinearHeading(new Vector2d(secondSpecimenStrafeToChamberX, secondSpecimenStrafeToChamberY), Math.toRadians(180))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(0.75)
+
+                                //for third specimen hook
+
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .stopAndAdd(slider.sliderBackward(sliderBackwardPos))
+                                .waitSeconds(1)
+
+                                .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
+                                .stopAndAdd(elbow.straightEobow())
+
+                                .strafeToLinearHeading(new Vector2d(thirdSpecimenStrafeToFrameX, thirdSpecimenStrafeToFrameY), Math.toRadians(0))
+
+                                .waitSeconds(0.25)
+                                .stopAndAdd(intake.closeIntake(intake_close))
+                                .waitSeconds(0.75)
+                                .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
+                                .stopAndAdd(elbow.elbowTop())
+
+                                .strafeToLinearHeading(new Vector2d(thirdSpecimenStrafeToChamberX, thirdSpecimenStrafeToChamberY), Math.toRadians(180))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .waitSeconds(1)
+
+                                /*.lineToY(moveBackToTurnLineToY)
                                 .turn(Math.toRadians(turn1RghtAngle))
                                 //.waitSeconds(0.25)
                                 .lineToX(secondSpecimenHookLineToX)
-                                .turn(Math.toRadians(turn2RghtAngle))
+                                .turn(Math.toRadians(turn2RghtAngle)) */
 
                                 .build()
                 ));
 
-        parallelAction = drive.actionBuilder(drive.pose)
+     /*   parallelAction = drive.actionBuilder(drive.pose)
                 //.waitSeconds(1)
-                .lineToY(secondSpecimenFwdToChamber)
-                .waitSeconds(0.25)
-                .build();
+                //.lineToY(secondSpecimenFwdToChamber)
 
-        Actions.runBlocking(new SequentialAction(
+
+               .strafeToLinearHeading(new Vector2d(secondSpecimenStrafeToChamberX, secondSpecimenStrafeToChamberY), Math.toRadians(90))
+                .waitSeconds(0.25)
+                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                .waitSeconds(0.75)
+                .build();  */
+
+       /* Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         parallelAction,
+                        //new SleepAction(1),
                         slider.sliderForward(sliderForwardPos),
+                        //.waitSeconds(1.5)
                         new SleepAction(0.75)
                 )
-        ));
+        ));*/
 
 
-        elevatorDownPos = 0;
+       // elevatorDownPos = 0;
 
-
+/*
         Actions.runBlocking(
                 new SequentialAction(
                         drive.actionBuilder(drive.pose)
@@ -169,31 +213,50 @@ public class RedRightThree extends LinearOpMode {
                                 .stopAndAdd(elevator.elevatorDown(elevatorDownPos))
                                 .stopAndAdd(elbow.elbowTop())
 
-                                //hook the third specimen
-                                .lineToY(moveBackToTurnLineToY)
-                                .turn(Math.toRadians(turnAngle))
+
+                                .strafeToLinearHeading(new Vector2d(thirdSpecimenStrafeToFrameX, thirdSpecimenStrafeToFrameY), Math.toRadians(270))
                                 .waitSeconds(0.25)
-                                .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
-                                .setTangent(Math.toRadians(90))
-                                .lineToY(grabSpecimenLineToY + 5)
-                                .stopAndAdd(elbow.straightEobow())
-                                .lineToY(thirdSpecimenGrabLineToY)
+
                                 .waitSeconds(0.25)
                                 .stopAndAdd(intake.closeIntake(intake_close))
                                 .waitSeconds(0.75)
                                 .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
                                 .stopAndAdd(elbow.elbowTop())
-                                .lineToY(moveBackToTurnLineToY)
-                                .turn(Math.toRadians(turn1RghtAngle))
-                                //.waitSeconds(0.25)
-                                .lineToX(thirdSpecimenHookLineToX)
-                                .turn(Math.toRadians(turn2RghtAngle))
 
+                                .strafeToLinearHeading(new Vector2d(thirdSpecimenStrafeToChamberX, thirdSpecimenStrafeToChamberY), Math.toRadians(270))
+                                .waitSeconds(0.25)
+                                .stopAndAdd(slider.sliderForward(sliderForwardPos))
+                                .waitSeconds(1)
+                                .stopAndAdd(intake.openIntake(intake_specimen_open))
+                                .waitSeconds(1)
+
+
+                                /*
+                                        //hook the third specimen
+                                        .lineToY(moveBackToTurnLineToY)
+                                        .turn(Math.toRadians(turnAngle))
+                                        .waitSeconds(0.25)
+                                        .strafeTo(new Vector2d(thirdSpecimenHookStrafeToX, moveBackToTurnLineToY))
+                                        .setTangent(Math.toRadians(90))
+                                        .lineToY(grabSpecimenLineToY + 5)
+                                        .stopAndAdd(elbow.straightEobow())
+                                        .lineToY(thirdSpecimenGrabLineToY)
+                                        .waitSeconds(0.25)
+                                        .stopAndAdd(intake.closeIntake(intake_close))
+                                        .waitSeconds(0.75)
+                                        .stopAndAdd(elevator.elevatorUp(elevatorSpecimenHookPos))
+                                        .stopAndAdd(elbow.elbowTop())
+                                        .lineToY(moveBackToTurnLineToY)
+                                        .turn(Math.toRadians(turn1RghtAngle))
+                                        //.waitSeconds(0.25)
+                                        .lineToX(thirdSpecimenHookLineToX)
+                                        .turn(Math.toRadians(turn2RghtAngle)) */
+/*
 
                                 .build()
                 ));
 
-
+/*
 
         parallelAction = drive.actionBuilder(drive.pose)
                 .lineToY(thirdSpecimenFwdToChamber)
@@ -218,7 +281,7 @@ public class RedRightThree extends LinearOpMode {
                 ));
 
 
-
+*/
 
 
         telemetry.addLine("end autonomous ");

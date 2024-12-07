@@ -27,13 +27,13 @@ public class YellowSampleBlueLeft extends LinearOpMode {
     public static int secondSampleRightTurnAngle = -55;
     public static int secondSampleLeftTurnAngle = 103;
     public static double secondSampleLineToYForward = 26.5;
-    public static double secondSampleForwardToBasket = 49;
+    public static double secondSampleForwardToBasket = 47;
 
 
     //third sample
     public static double thirdSampleBackwardY = 35;
-    public static int thirdSampleRightTurnAngle = -106;
-    public static double thirdSampleForwardY = 28;
+    public static int thirdSampleRightTurnAngle = -117;
+    public static double thirdSampleForwardY = 26.5;
     public static int thirdSampleLeftTurnAngle = 119;
     public static double thirdSampleForwardToBasket = 48;
 
